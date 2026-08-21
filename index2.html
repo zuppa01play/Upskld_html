@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPSKLD — Human Intelligence, Amplified by AI.</title>
+<style>
+  :root{
+    --green:#2F5233;
+    --green-dark:#1E3A22;
+    --green-light:#EAF1E6;
+    --gold:#B8860B;
+    --gold-light:#F5E9CE;
+    --cream:#FBF8F2;
+    --white:#FFFFFF;
+    --text:#1A1A1A;
+    --gray:#5B5B5B;
+    --border:#E4E0D6;
+    --radius:16px;
+    --shadow:0 12px 32px rgba(30,58,34,0.09);
+    --serif:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);color:var(--text);background:var(--cream);line-height:1.6;font-size:16px;}
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  section{padding:88px 0;}
+  h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.2;color:var(--text);}
+  h1{font-size:44px;}
+  h2{font-size:34px;}
+  h3{font-size:22px;}
+  .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;}
+  .accent{color:var(--gold);font-style:italic;}
+  .lede{font-size:18px;color:var(--gray);max-width:640px;margin:18px 0 0;}
+  .center{text-align:center;margin-left:auto;margin-right:auto;}
+  .section-head{max-width:720px;margin:0 auto 48px;text-align:center;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:999px;font-size:15px;font-weight:600;border:2px solid transparent;cursor:pointer;transition:all .18s ease;white-space:nowrap;}
+  .btn-primary{background:var(--green);color:#fff;}
+  .btn-primary:hover{background:var(--green-dark);transform:translateY(-1px);}
+  .btn-outline{border-color:var(--green);color:var(--green);background:transparent;}
+  .btn-outline:hover{background:var(--green-light);}
+  .btn-gold{background:var(--gold);color:#fff;}
+  .btn-gold:hover{opacity:.9;}
+  .btn-sm{padding:9px 18px;font-size:13px;}
+  .btn[disabled], .btn.disabled{opacity:.55;cursor:not-allowed;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:5px 12px;border-radius:999px;background:var(--green-light);color:var(--green-dark);}
+  .verify-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#9a5b00;background:#FFF3DA;border:1px dashed #E0A93B;padding:4px 10px;border-radius:8px;}
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow);}
+  .grid{display:grid;gap:24px;}
+
+  /* NAV */
+  header{position:sticky;top:0;z-index:50;background:rgba(251,248,242,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;max-width:1180px;margin:0 auto;}
+  .logo{display:fleLx;align-items:center;gap:9px;font-family:var(--serif);font-size:23px;color:var(--green-dark);font-weight:700;}
+  .logo svg{width:26px;height:26px;}
+  .nav-links{display:flex;align-items:center;gap:30px;font-size:14.5px;font-weight:500;}
+  .nav-links a{color:var(--text);opacity:.85;transition:opacity .15s;}
+  .nav-links a:hover{opacity:1;color:var(--green-dark);}
+  .nav-cta{display:flex;align-items:center;gap:18px;}
+  .nav-login{font-size:14px;font-weight:600;opacity:.8;}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;}
+  .burger span{width:24px;height:2px;background:var(--text);}
+  @media(max-width:900px){
+    .nav-links{position:fixed;top:66px;left:0;right:0;background:var(--cream);flex-direction:column;align-items:flex-start;padding:20px 28px;border-bottom:1px solid var(--border);display:none;gap:16px;}
+    .nav-links.open{display:flex;}
+    .burger{display:flex;}
+    .nav-login{display:none;}
+  }
+
+  /* HERO */
+  .hero{padding:80px 0 60px;background:radial-gradient(circle at 80% 0%, var(--green-light) 0%, var(--cream) 55%);}
+  .hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;}
+  .hero h1{font-size:46px;}
+  .hero .lede{font-size:19px;max-width:none;}
+  .hero-ctas{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap;}
+  .hero-chips{display:flex;gap:22px;margin-top:36px;flex-wrap:wrap;}
+  .hero-chip{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--gray);font-weight:600;}
+  .hero-chip .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex:none;}
+  .hero-visual{position:relative;height:420px;}
+  .photo-card{position:absolute;width:150px;height:190px;border-radius:14px;box-shadow:0 14px 28px rgba(0,0,0,.14);display:flex;align-items:flex-end;padding:14px;font-size:12.5px;font-weight:700;color:#fff;background-size:cover;}
+  .photo-card span{background:rgba(0,0,0,.28);padding:4px 8px;border-radius:6px;}
+  .pc1{top:0;left:40px;background:linear-gradient(160deg,#4a7a52,#2F5233);transform:rotate(-6deg);}
+  .pc2{top:14px;left:210px;background:linear-gradient(160deg,#c99a2e,#B8860B);transform:rotate(4deg);z-index:2;}
+  .pc3{top:120px;left:0;background:linear-gradient(160deg,#7a9e6f,#3f6b46);transform:rotate(3deg);}
+  .pc4{top:150px;left:170px;background:linear-gradient(160deg,#2d4a63,#1c3145);transform:rotate(-4deg);z-index:2;}
+  .pc5{top:230px;left:320px;background:linear-gradient(160deg,#8a5a2e,#5c3b1e);transform:rotate(7deg);}
+  @media(max-width:900px){
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-visual{height:300px;margin-top:20px;}
+    .hero h1{font-size:34px;}
+  }
+
+  /* WHY NOW */
+  .why-cards{grid-template-columns:repeat(3,1fr);}
+  .why-cards .card h3{margin-bottom:12px;color:var(--green-dark);}
+  .why-cards .card p{color:var(--gray);font-size:15px;}
+  @media(max-width:800px){.why-cards{grid-template-columns:1fr;}}
+
+  /* HI+AI */
+  .hi-section{background:var(--green-dark);color:#fff;}
+  .hi-section .eyebrow{color:var(--gold);}
+  .hi-section h2, .hi-section .section-head{color:#fff;}
+  .hi-section .lede{color:#d9e3d6;}
+  .hi-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:30px;align-items:center;margin-top:50px;}
+  .hi-col{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:var(--radius);padding:30px;}
+  .hi-col h4{font-family:var(--sans);font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+  .hi-col ul li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:15.5px;}
+  .hi-col ul li:last-child{border-bottom:none;}
+  .hi-plus{font-family:var(--serif);font-size:40px;color:var(--gold);text-align:center;}
+  .hi-outcome{text-align:center;margin-top:34px;font-size:18px;color:#f1ead9;font-style:italic;max-width:640px;margin-left:auto;margin-right:auto;}
+  @media(max-width:800px){.hi-grid{grid-template-columns:1fr;}.hi-plus{transform:rotate(90deg);}}
+
+  /* TABS */
+  .tabs-nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:38px;}
+  .tab-btn{padding:11px 20px;border-radius:999px;border:1.5px solid var(--border);background:#fff;font-size:14px;font-weight:600;color:var(--gray);cursor:pointer;}
+  .tab-btn.active{background:var(--green);border-color:var(--green);color:#fff;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+  .job-panel-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:40px;align-items:center;}
+  .job-panel-inner ul{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;}
+  .job-panel-inner ul li{font-size:15px;padding-left:22px;position:relative;}
+  .job-panel-inner ul li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:var(--gold);}
+  @media(max-width:800px){.job-panel-inner{grid-template-columns:1fr;padding:26px;}.job-panel-inner ul{grid-template-columns:1fr;}}
+
+  /* COURSES */
+  .course-grid{grid-template-columns:repeat(4,1fr);}
+  .course-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow);}
+  .course-card h3{font-size:19px;}
+  .course-card p{font-size:14px;color:var(--gray);flex:1;}
+  .course-meta{font-size:12.5px;color:var(--gray);border-top:1px dashed var(--border);padding-top:12px;margin-top:4px;}
+  @media(max-width:1000px){.course-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:600px){.course-grid{grid-template-columns:1fr;}}
+
+  /* EXPERTS */
+  .expert-grid{grid-template-columns:repeat(4,1fr);}
+  .expert-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;box-shadow:var(--shadow);}
+  .avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(160deg,var(--green),var(--gold));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;margin:0 auto 14px;}
+  .expert-card h3{font-size:16.5px;margin-bottom:2px;}
+  .expert-role{font-size:12.5px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;}
+  .expert-focus{font-size:13px;color:var(--gray);margin-bottom:14px;min-height:38px;}
+  @media(max-width:1000px){.expert-grid{grid-template-columns:repeat(2,1fr);}}
+
+  /* TRUST */
+  .logo-wall{grid-template-columns:repeat(6,1fr);margin-top:36px;}
+  .logo-box{height:70px;border:1.5px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11.5px;color:var(--gray);text-align:center;background:#fff;}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px;}
+  .stat-box{text-align:center;padding:22px;border-radius:var(--radius);background:#fff;border:1px solid var(--border);}
+  .stat-box .num{font-family:var(--serif);font-size:26px;color:var(--green-dark);}
+  @media(max-width:800px){.logo-wall{grid-template-columns:repeat(3,1fr);}.stat-row{grid-template-columns:1fr;}}
+
+  /* TESTIMONIALS */
+  .testi-grid{grid-template-columns:repeat(4,1fr);}
+  .testi-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;}
+  .testi-card.locked{background:repeating-linear-gradient(135deg,#faf7f0,#faf7f0 10px,#f3efe4 10px,#f3efe4 20px);display:flex;align-items:center;justify-content:center;text-align:center;color:var(--gray);font-size:13.5px;min-height:170px;}
+  .stars{color:var(--gold);font-size:14px;letter-spacing:2px;}
+  .testi-quote{font-size:14.5px;font-style:italic;color:var(--text);}
+  .testi-name{font-size:13.5px;font-weight:700;}
+  .testi-role{font-size:12px;color:var(--gray);}
+  @media(max-width:1000px){.testi-grid{grid-template-columns:repeat(2,1fr);}}
+
+  /* CORPORATE */
+  .corp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;}
+  .corp-form{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);}
+  .corp-form label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px;}
+  .corp-form label:first-child{margin-top:0;}
+  .corp-form input,.corp-form select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-family:var(--sans);}
+  .checkbox-row{display:flex;flex-wrap:wrap;gap:14px;font-size:13.5px;font-weight:500;}
+  .checkbox-row label{display:flex;align-items:center;gap:6px;font-weight:500;margin:0;}
+  @media(max-width:900px){.corp-wrap{grid-template-columns:1fr;}}
+
+  /* JOURNEY */
+  .journey-grid{grid-template-columns:repeat(4,1fr);position:relative;}
+  .journey-step{text-align:center;}
+  .journey-num{width:46px;height:46px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:19px;margin:0 auto 16px;}
+  .journey-step h3{font-size:17px;margin-bottom:8px;}
+  .journey-step p{font-size:14px;color:var(--gray);}
+  @media(max-width:900px){.journey-grid{grid-template-columns:1fr;}}
+
+  /* WHY UPSKLD */
+  .compare-grid{grid-template-columns:repeat(4,1fr);align-items:stretch;}
+  .compare-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;}
+  .compare-card.highlight{background:var(--green-dark);color:#fff;border-color:var(--green-dark);}
+  .compare-card h3{font-size:16px;margin-bottom:14px;}
+  .compare-card.highlight h3{color:var(--gold);}
+  .compare-card p{font-size:13.5px;color:var(--gray);margin-bottom:8px;}
+  .compare-card.highlight p{color:#dfe8dc;}
+  .compare-card p b{color:var(--text);}
+  .compare-card.highlight p b{color:#fff;}
+  @media(max-width:1000px){.compare-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:600px){.compare-grid{grid-template-columns:1fr;}}
+
+  /* FAQ */
+  .faq-list{max-width:760px;margin:0 auto;}
+  .faq-item{border-bottom:1px solid var(--border);}
+  .faq-q{width:100%;text-align:left;background:none;border:none;padding:20px 0;font-family:var(--serif);font-size:18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;color:var(--text);}
+  .faq-q .plus{font-size:22px;color:var(--gold);transition:transform .2s;flex:none;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;font-size:14.5px;color:var(--gray);}
+  .faq-item.open .faq-a{max-height:260px;padding-bottom:20px;}
+  .verify-inline{display:block;margin-top:8px;}
+
+  /* FINAL CTA */
+  .final-cta{background:var(--green-dark);color:#fff;}
+  .final-cta .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+  .final-cta h2{color:#fff;}
+  .final-cta .lede{color:#d9e3d6;max-width:none;}
+  .booking-form{background:#fff;border-radius:var(--radius);padding:28px;color:var(--text);box-shadow:var(--shadow);}
+  .booking-form label{display:block;font-size:13px;font-weight:700;margin:12px 0 6px;}
+  .booking-form label:first-child{margin-top:0;}
+  .booking-form input,.booking-form select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-family:var(--sans);}
+  .booking-form .btn{width:100%;justify-content:center;margin-top:18px;}
+  .booking-note{font-size:11.5px;color:var(--gray);margin-top:10px;text-align:center;}
+  @media(max-width:900px){.final-cta .wrap{grid-template-columns:1fr;}}
+
+  /* FOOTER */
+  footer{background:#152318;color:#cfd9cc;padding:64px 0 24px;}
+  .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;}
+  .footer-grid h4{color:#fff;font-family:var(--sans);font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
+  .footer-grid a{display:block;font-size:14px;color:#b7c4b3;padding:5px 0;}
+  .footer-grid a:hover{color:#fff;}
+  .footer-logo{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-size:22px;color:#fff;margin-bottom:14px;}
+  .footer-tagline{font-size:13.5px;color:#9fac9b;max-width:280px;}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:48px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#8b9788;}
+  @media(max-width:800px){.footer-grid{grid-template-columns:1fr 1fr;}}
+
+  .template-note{background:#fff3da;border-bottom:1px solid #e0a93b;color:#7a4a00;font-size:13px;text-align:center;padding:9px 20px;}
+</style>
+</head>
+<body>
+
+<div class="template-note">Website template built from the UPSKLD Master Messaging &amp; Website Content Document — replace every <strong>[Add …]</strong> placeholder and verify-flagged item before publishing.</div>
+
+<header>
+  <nav class="nav">
+    <a href="#top" class="logo">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C7 2 4 7 4 12c0 5 3.5 9 8 10 4.5-1 8-5 8-10 0-5-3-10-8-10z" fill="#2F5233"/>
+        <path d="M12 6c-2 3-2 8 0 12" stroke="#B8860B" stroke-width="1.4" fill="none"/></svg>
+      UPSKLD
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#ai-for-your-job">AI for Your Job</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#experts">Experts</a></li>
+      <li><a href="#corporate">Organisations</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#" class="nav-login">Login</a>
+      <a href="#final-cta" class="btn btn-primary btn-sm">Book Free Session</a>
+      <button class="burger" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <span class="eyebrow">Human Intelligence + AI</span>
+        <h1>AI won’t replace your experience. But knowing how to use it will change what you do with it.</h1>
+        <p class="lede">UPSKLD helps working professionals, business leaders and students apply AI to the job they already do — no coding, no jargon, no chatbot-building required.</p>
+        <div class="hero-ctas">
+          <a href="#ai-for-your-job" class="btn btn-primary">Explore AI for Your Role →</a>
+          <a href="#learning-journey" class="btn btn-outline">See How It Works</a>
+        </div>
+        <div class="hero-chips">
+          <div class="hero-chip"><span class="dot"></span>Job-specific tracks, not tool tutorials</div>
+          <div class="hero-chip"><span class="dot"></span>No coding, ever</div>
+          <div class="hero-chip"><span class="dot"></span>Vernacular delivery available</div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="photo-card pc1"><span>Sales &amp; Marketing</span></div>
+        <div class="photo-card pc2"><span>Leadership</span></div>
+        <div class="photo-card pc3"><span>Students</span></div>
+        <div class="photo-card pc4"><span>HR &amp; Finance</span></div>
+        <div class="photo-card pc5"><span>Entrepreneurs</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY AI WHY NOW -->
+  <section id="why-now">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Why AI, Why Now?</span>
+        <h2>AI didn’t ask permission. It’s already <span class="accent">in the room.</span></h2>
+        <p class="lede center">Across sales calls, marketing briefs, HR shortlists, finance models and leadership meetings, AI is already being used — sometimes openly, often quietly.</p>
+      </div>
+      <div class="grid why-cards">
+        <div class="card">
+          <h3>It’s already happening</h3>
+          <p>Some professionals are drafting faster. Some are researching in minutes instead of hours. Some are making decisions with more information than they had last year. This isn’t a future scenario — it’s happening in the same roles, at the same companies, right now.</p>
+        </div>
+        <div class="card">
+          <h3>The real risk</h3>
+          <p>The risk isn’t that AI takes over your job. It’s simpler: professionals who know how to work with AI may start moving faster than professionals who don’t — inside the very same role.</p>
+        </div>
+        <div class="card">
+          <h3>The real opportunity</h3>
+          <p>You can be one of the professionals moving faster. That’s the entire idea behind UPSKLD — a practical way to start, at your own pace.</p>
+        </div>
+      </div>
+      <div class="center" style="margin-top:36px;"><a href="#ai-for-your-job" class="btn btn-outline">See How AI Applies to Your Job</a></div>
+    </div>
+  </section>
+
+  <!-- HUMAN INTELLIGENCE + AI -->
+  <section class="hi-section" id="philosophy">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Our Philosophy</span>
+        <h2>The future isn’t AI replacing you. It’s <span class="accent">you, amplified.</span></h2>
+        <p class="lede center">AI can generate, analyse, automate and accelerate. What it can’t do is replace judgement, creativity, context, empathy, leadership or the ability to make a hard call with incomplete information. Those still belong to you.</p>
+      </div>
+      <div class="hi-grid">
+        <div class="hi-col">
+          <h4>What AI Brings</h4>
+          <ul>
+            <li>Generates first drafts &amp; ideas</li>
+            <li>Analyses data at speed</li>
+            <li>Automates repetitive work</li>
+            <li>Accelerates research</li>
+          </ul>
+        </div>
+        <div class="hi-plus">+</div>
+        <div class="hi-col">
+          <h4>What You Bring</h4>
+          <ul>
+            <li>Judgement &amp; decision-making</li>
+            <li>Creativity &amp; strategic thinking</li>
+            <li>Context &amp; domain expertise</li>
+            <li>Empathy &amp; leadership</li>
+          </ul>
+        </div>
+      </div>
+      <p class="hi-outcome">“Not tools for their own sake. Not hype. Just your job, done with a new capability attached to it.”</p>
+      <div class="center" style="margin-top:34px;"><a href="#why-upskld" class="btn btn-gold">See the UPSKLD Approach</a></div>
+    </div>
+  </section>
+
+  <!-- AI FOR YOUR JOB -->
+  <section id="ai-for-your-job">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Find Your Track</span>
+        <h2>Don’t learn AI for its own sake. Learn how it applies to <span class="accent">the work you already do.</span></h2>
+        <p class="lede center">A marketing professional doesn’t need to build a chatbot. A salesperson doesn’t need to learn Python. What they need is simpler: to know exactly where AI fits into the work they already do well.</p>
+      </div>
+
+      <div class="tabs-nav" id="jobTabs">
+        <button class="tab-btn active" data-tab="sales">Sales</button>
+        <button class="tab-btn" data-tab="marketing">Marketing</button>
+        <button class="tab-btn" data-tab="hr">HR</button>
+        <button class="tab-btn" data-tab="finance">Finance</button>
+        <button class="tab-btn" data-tab="leadership">Leadership</button>
+        <button class="tab-btn" data-tab="students">Students</button>
+      </div>
+
+      <div class="tab-panel active" data-panel="sales">
+        <div class="job-panel-inner">
+          <div>
+            <span class="tag">AI for Sales</span>
+            <h3 style="margin-top:14px;">Move faster from research to relationship.</h3>
+            <a href="#courses" class="btn btn-primary btn-sm" style="margin-top:18px;">Explore AI for Sales</a>
+          </div>
+          <ul>
+            <li>Lead research</li><li>Prospect analysis</li><li>Personalised outreach</li>
+            <li>Sales proposals</li><li>Meeting preparation</li><li>Follow-up</li><li>CRM productivity</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-panel" data-panel="marketing">
+        <div class="job-panel-inner">
+          <div>
+            <span class="tag">AI for Marketing</span>
+            <h3 style="margin-top:14px;">Create more, guess less.</h3>
+            <a href="#courses" class="btn btn-primary btn-sm" style="margin-top:18px;">Explore AI for Marketing</a>
+          </div>
+          <ul>
+            <li>Campaign ideation</li><li>Content creation</li><li>Customer research</li>
+            <li>Market intelligence</li><li>SEO</li><li>Social media</li><li>Campaign analysis</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-panel" data-panel="hr">
+        <div class="job-panel-inner">
+          <div>
+            <span class="tag">AI for HR</span>
+            <h3 style="margin-top:14px;">Spend less time on process, more on people.</h3>
+            <a href="#courses" class="btn btn-primary btn-sm" style="margin-top:18px;">Explore AI for HR</a>
+          </div>
+          <ul>
+            <li>Recruitment</li><li>Job descriptions</li><li>Candidate screening support</li>
+            <li>Employee communication</li><li>Learning &amp; development</li><li>Workforce analytics</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-panel" data-panel="finance">
+        <div class="job-panel-inner">
+          <div>
+            <span class="tag">AI for Finance</span>
+            <h3 style="margin-top:14px;">Faster numbers, sharper insight.</h3>
+            <a href="#courses" class="btn btn-primary btn-sm" style="margin-top:18px;">Explore AI for Finance</a>
+          </div>
+          <ul>
+            <li>Reporting</li><li>Data analysis</li><li>Financial insights</li>
+            <li>Documentation</li><li>Forecasting support</li><li>Workflow automation</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-panel" data-panel="leadership">
+        <div class="job-panel-inner">
+          <div>
+            <span class="tag">AI for Leadership</span>
+            <h3 style="margin-top:14px;">Decide with more information, not more noise.</h3>
+            <a href="#courses" class="btn btn-primary btn-sm" style="margin-top:18px;">Explore AI for Leaders</a>
+          </div>
+          <ul>
+            <li>Decision support</li><li>Research</li><li>Strategic analysis</li>
+            <li>Meeting intelligence</li><li>Productivity</li><li>Scenario planning</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-panel" data-panel="students">
+        <div class="job-panel-inner">
+          <div>
+            <span class="tag">AI for Students</span>
+            <h3 style="margin-top:14px;">Walk in AI-ready, not just AI-curious.</h3>
+            <a href="#courses" class="btn btn-primary btn-sm" style="margin-top:18px;">Start Your AI Journey</a>
+          </div>
+          <ul>
+            <li>Research</li><li>Learning</li><li>Presentations</li>
+            <li>Writing</li><li>Productivity</li><li>Career preparation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COURSES -->
+  <section id="courses" style="background:var(--green-light);">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Courses</span>
+        <h2>Built around <span class="accent">outcomes</span>, not tools.</h2>
+        <p class="lede center">“Learn ChatGPT” teaches a tool. “AI for Sales” teaches an outcome — and includes whichever tools help you get there, taught in context.</p>
+      </div>
+      <div class="grid course-grid">
+        <div class="course-card">
+          <span class="tag">Professionals</span>
+          <h3>AI for Sales</h3>
+          <p>Lead research, outreach and proposals — faster, without losing the personal touch.</p>
+          <div class="course-meta"><span class="verify-badge">Add pricing &amp; curriculum</span></div>
+          <a href="#final-cta" class="btn btn-outline btn-sm">Reserve Free Counselling</a>
+        </div>
+        <div class="course-card">
+          <span class="tag">Professionals</span>
+          <h3>AI for Marketing</h3>
+          <p>Campaign ideation, content and market intelligence, built around real briefs.</p>
+          <div class="course-meta"><span class="verify-badge">Add pricing &amp; curriculum</span></div>
+          <a href="#final-cta" class="btn btn-outline btn-sm">Reserve Free Counselling</a>
+        </div>
+        <div class="course-card">
+          <span class="tag">Leadership</span>
+          <h3>AI for Business Leaders</h3>
+          <p>Evaluate AI adoption, lead with confidence, without becoming a technologist.</p>
+          <div class="course-meta"><span class="verify-badge">Add pricing &amp; curriculum</span></div>
+          <a href="#final-cta" class="btn btn-outline btn-sm">Reserve Free Counselling</a>
+        </div>
+        <div class="course-card">
+          <span class="tag">Professionals</span>
+          <h3>AI for HR</h3>
+          <p>Recruitment, communication and L&amp;D, with less manual process.</p>
+          <div class="course-meta"><span class="verify-badge">Add pricing &amp; curriculum</span></div>
+          <a href="#final-cta" class="btn btn-outline btn-sm">Reserve Free Counselling</a>
+        </div>
+        <div class="course-card">
+          <span class="tag">Professionals</span>
+          <h3>AI for Finance</h3>
+          <p>Reporting, forecasting support and documentation, done faster.</p>
+          <div class="course-meta"><span class="verify-badge">Add pricing &amp; curriculum</span></div>
+          <a href="#final-cta" class="btn btn-outline btn-sm">Reserve Free Counselling</a>
+        </div>
+        <div class="course-card">
+          <span class="tag">Everyone</span>
+          <h3>AI for Productivity</h3>
+          <p>Practical daily-work habits that apply across any role or team.</p>
+          <div class="course-meta"><span class="verify-badge">Add pricing &amp; curriculum</span></div>
+          <a href="#final-cta" class="btn btn-outline btn-sm">Reserve Free Counselling</a>
+        </div>
+        <div class="course-card">
+          <span class="tag">Founders</span>
+          <h3>AI for Entrepreneurs</h3>
+          <p>Build, automate and scale a lean operation using AI across the business.</p>
+          <div class="course-meta"><span class="verify-badge">Add pricing &amp; curriculum</span></div>
+          <a href="#final-cta" class="btn btn-outline btn-sm">Reserve Free Counselling</a>
+        </div>
+        <div class="course-card" style="border-color:var(--gold);">
+          <span class="tag" style="background:var(--gold-light);color:#7a5300;">Live example</span>
+          <h3>AI for Students</h3>
+          <p>Graduate more employable than your syllabus alone would make you. AI fundamentals, academic &amp; research assistance, resume building, career guidance.</p>
+          <div class="course-meta">Live + self-paced · 4–6 weeks · ₹12,000–₹15,000 · English + regional · Certificate on completion</div>
+          <a href="#final-cta" class="btn btn-primary btn-sm">Reserve Free Counselling</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERTS -->
+  <section id="experts">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Expert Ecosystem</span>
+        <h2>Learn from people who understand AI <span class="accent">beyond the hype.</span></h2>
+        <p class="lede center">AI intersects technology, business, marketing, research and leadership — so UPSKLD brings together people from across that map, not a single kind of expert.</p>
+      </div>
+      <div class="grid expert-grid" id="expertGrid"></div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section style="background:var(--green-light);">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Trust &amp; Credibility</span>
+        <h2>Trusted by people who take AI <span class="accent">seriously.</span></h2>
+        <p class="lede center">We’re not going to invent numbers to make this page look bigger than it is. As real evidence becomes available, it replaces every placeholder below.</p>
+      </div>
+      <div class="stat-row">
+        <div class="stat-box"><div class="num">[Add]</div>Verified learner count</div>
+        <div class="stat-box"><div class="num">[Add]</div>International learner locations</div>
+        <div class="stat-box"><div class="num">[Add]</div>Institutional partnerships</div>
+      </div>
+      <div class="grid logo-wall">
+        <div class="logo-box">Add logo</div><div class="logo-box">Add logo</div><div class="logo-box">Add logo</div>
+        <div class="logo-box">Add logo</div><div class="logo-box">Add logo</div><div class="logo-box">Add logo</div>
+      </div>
+      <p class="lede center" style="margin-top:34px;">AI is used differently by a marketing team in Mumbai, a finance department in Dubai, and a university placement cell in Bengaluru. Evidence from professionals, leaders, researchers and institutions across that range shows the approach holds up across real, different jobs — not just one type of learner.</p>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Early Learners</span>
+        <h2>What early learners are <span class="accent">saying.</span></h2>
+        <p class="lede center">UPSKLD is a new venture. These are real reflections from our earliest learners — we’ll keep adding to them as more people complete their courses.</p>
+      </div>
+      <div class="grid testi-grid">
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <p class="testi-quote">“I never thought I’d use AI as a B.Com student — now I use it every week for my project work and I feel ready for placements.”</p>
+          <div><div class="testi-name">Sharanya Desai</div><div class="testi-role">B.Com Student</div></div>
+          <span class="verify-badge">Verify quote &amp; consent</span>
+        </div>
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <p class="testi-quote">“I was worried AI would replace my role in operations. This course showed me exactly where I can use it to my advantage instead.”</p>
+          <div><div class="testi-name">Rakesh Patel</div><div class="testi-role">Operations</div></div>
+          <span class="verify-badge">Verify quote &amp; consent</span>
+        </div>
+        <div class="testi-card locked">Add testimonial — Sales / Marketing</div>
+        <div class="testi-card locked">Add testimonial — HR / Leadership</div>
+        <div class="testi-card locked">Add testimonial — Entrepreneur</div>
+        <div class="testi-card locked">Add testimonial — Organisation / Corporate</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CORPORATE -->
+  <section id="corporate" style="background:var(--green-dark);color:#fff;">
+    <div class="wrap corp-wrap">
+      <div>
+        <span class="eyebrow">For Organisations</span>
+        <h2 style="color:#fff;">Bring your whole team up to speed — <span class="accent">by function, not by guesswork.</span></h2>
+        <p class="lede" style="color:#d9e3d6;">Individual employees are probably already experimenting with AI — unevenly, and without guidance. UPSKLD’s organisational tracks mirror our individual courses, so training maps directly onto how each department already works.</p>
+        <p class="lede" style="color:#d9e3d6;">AI for Sales teams. AI for Marketing teams. AI for HR, Finance and Leadership. Not a generic “AI 101” for everyone.</p>
+      </div>
+      <form class="corp-form" onsubmit="event.preventDefault();alert('Connect this form to your CRM or inbox before publishing.');">
+        <label>Company name</label>
+        <input type="text" placeholder="e.g. Acme Technologies">
+        <label>Team size</label>
+        <select><option>1–10</option><option>11–50</option><option>51–200</option><option>200+</option></select>
+        <label>Function(s) of interest</label>
+        <div class="checkbox-row">
+          <label><input type="checkbox">Sales</label>
+          <label><input type="checkbox">Marketing</label>
+          <label><input type="checkbox">HR</label>
+          <label><input type="checkbox">Finance</label>
+          <label><input type="checkbox">Leadership</label>
+        </div>
+        <label>Work email</label>
+        <input type="email" placeholder="you@company.com">
+        <button class="btn btn-gold" style="width:100%;justify-content:center;margin-top:20px;">Talk to Us About Team Training</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- LEARNING JOURNEY -->
+  <section id="learning-journey">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Your Path</span>
+        <h2>From uncertain about AI to <span class="accent">confident with it</span> — in four steps.</h2>
+      </div>
+      <div class="grid journey-grid">
+        <div class="journey-step"><div class="journey-num">1</div><h3>Recognise</h3><p>See where AI already touches your role — in a free 15-minute roadmap call.</p></div>
+        <div class="journey-step"><div class="journey-num">2</div><h3>Get Matched</h3><p>Land on your job-specific track — no guessing which course applies to you.</p></div>
+        <div class="journey-step"><div class="journey-num">3</div><h3>Learn by Doing</h3><p>Every module ends with something usable in your actual work that week.</p></div>
+        <div class="journey-step"><div class="journey-num">4</div><h3>Apply &amp; Certify</h3><p>Walk away with a shareable Certificate of Completion, and a habit of using AI well.</p></div>
+      </div>
+      <div class="center" style="margin-top:40px;"><a href="#final-cta" class="btn btn-primary">See the Full Process</a></div>
+    </div>
+  </section>
+
+  <!-- WHY UPSKLD -->
+  <section id="why-upskld" style="background:var(--green-light);">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Why UPSKLD</span>
+        <h2>Not just a YouTube tutorial, or a <span class="accent">coding bootcamp.</span></h2>
+        <p class="lede center">There’s no shortage of ways to learn about AI right now. Most of them weren’t built for you.</p>
+      </div>
+      <div class="grid compare-grid">
+        <div class="compare-card">
+          <h3>Generic AI Courses</h3>
+          <p><b>Teaches:</b> AI concepts in general</p>
+          <p><b>Best for:</b> Broad awareness</p>
+          <p><b>Not built for:</b> Your specific job</p>
+        </div>
+        <div class="compare-card">
+          <h3>YouTube / ChatGPT Tutorials</h3>
+          <p><b>Teaches:</b> One tool or feature</p>
+          <p><b>Best for:</b> Quick, free tips</p>
+          <p><b>Not built for:</b> A structured workflow</p>
+        </div>
+        <div class="compare-card">
+          <h3>Coding Bootcamps</h3>
+          <p><b>Teaches:</b> How to build AI systems</p>
+          <p><b>Best for:</b> Becoming a developer</p>
+          <p><b>Not built for:</b> Improving your current job</p>
+        </div>
+        <div class="compare-card highlight">
+          <h3>UPSKLD</h3>
+          <p><b>Teaches:</b> AI applied to your job</p>
+          <p><b>Best for:</b> Working professionals &amp; leaders</p>
+          <p><b>Built for:</b> The work you already do</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Questions before <span class="accent">you start.</span></h2>
+      </div>
+      <div class="faq-list" id="faqList">
+        <div class="faq-item open">
+          <button class="faq-q"><span>Do I need any technical background or coding experience?</span><span class="plus">+</span></button>
+          <div class="faq-a">No. Every UPSKLD course is built for non-technical professionals. If you can use email and a spreadsheet, you can do this.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Will this replace expertise I already have?</span><span class="plus">+</span></button>
+          <div class="faq-a">No — it’s built to work alongside it. UPSKLD teaches you to use AI to extend your judgement and experience, not substitute for them.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>How much time does a course take?</span><span class="plus">+</span></button>
+          <div class="faq-a">Typical duration and weekly time commitment vary by track.<span class="verify-badge verify-inline">Confirm duration per track</span></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>What will I actually be able to do afterwards?</span><span class="plus">+</span></button>
+          <div class="faq-a">You’ll finish with practical, role-specific AI workflows you can use immediately in your job — not just theoretical familiarity with AI.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Is this only for people early in their career?</span><span class="plus">+</span></button>
+          <div class="faq-a">No. UPSKLD has tracks for students, working professionals, business leaders, entrepreneurs and organisations — each built around the work that group actually does.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>What does the free session involve?</span><span class="plus">+</span></button>
+          <div class="faq-a">A short, no-pressure conversation to understand your role and map you to the right track — not a sales pitch.<span class="verify-badge verify-inline">Confirm exact call duration</span></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Do I get a certificate?</span><span class="plus">+</span></button>
+          <div class="faq-a">Yes — a shareable Certificate of Completion for every course track.<span class="verify-badge verify-inline">Confirm any partner recognition claims</span></div>
+        </div>
+      </div>
+      <div class="center" style="margin-top:36px;"><a href="#final-cta" class="btn btn-outline">Still Have Questions? Book a Free Call</a></div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta" id="final-cta">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Free Career Counselling</span>
+        <h2>You don’t need to become an AI expert.<br>You need to get better at what you already do — <span class="accent">with AI.</span></h2>
+        <p class="lede">A practical, job-specific way to work with AI, at your pace, without needing to become someone else to do it. No pitch. No pressure. Just a short conversation to map your AI roadmap.</p>
+      </div>
+      <form class="booking-form" onsubmit="event.preventDefault();alert('Connect this form to your booking/CRM system before publishing.');">
+        <label>Full name</label>
+        <input type="text" placeholder="e.g. Priya Sharma">
+        <label>Phone / WhatsApp</label>
+        <input type="tel" placeholder="+91">
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com">
+        <label>I am a…</label>
+        <select>
+          <option>Working professional</option>
+          <option>Business leader</option>
+          <option>Student</option>
+          <option>Entrepreneur</option>
+          <option>Representing an organisation</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Book My Free Slot →</button>
+        <p class="booking-note">By submitting you agree to be contacted via WhatsApp/Email/call for your session.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <div class="footer-logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none"><path d="M12 2C7 2 4 7 4 12c0 5 3.5 9 8 10 4.5-1 8-5 8-10 0-5-3-10-8-10z" fill="#fff"/><path d="M12 6c-2 3-2 8 0 12" stroke="#B8860B" stroke-width="1.4" fill="none"/></svg>
+        UPSKLD
+      </div>
+      <p class="footer-tagline">Human Intelligence, Amplified by AI. Practical AI courses for the work you already do — sales, marketing, HR, finance, leadership and more.</p>
+    </div>
+    <div>
+      <h4>Courses</h4>
+      <a href="#courses">AI for Sales</a>
+      <a href="#courses">AI for Marketing</a>
+      <a href="#courses">AI for Leaders</a>
+      <a href="#courses">AI for Students</a>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <a href="#philosophy">Our Philosophy</a>
+      <a href="#experts">Experts</a>
+      <a href="#corporate">Organisations</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a href="#">[Add email]</a>
+      <a href="#">[Add WhatsApp]</a>
+      <a href="#final-cta">Book Free Session</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 UPSKLD. [Add legal entity line.]</span>
+    <span>Privacy · Terms</span>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  document.getElementById('burgerBtn').addEventListener('click', function(){
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+  document.querySelectorAll('.nav-links a').forEach(function(a){
+    a.addEventListener('click', function(){ document.getElementById('navLinks').classList.remove('open'); });
+  });
+
+  // Job tabs
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = btn.getAttribute('data-tab');
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelector('.tab-panel[data-panel="'+target+'"]').classList.add('active');
+    });
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(function(q){
+    q.addEventListener('click', function(){
+      q.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Expert ecosystem (rendered from data so it's easy to edit in one place)
+  var experts = [
+    ['Vivek','Co-Founder','Leadership / AI / Business / Strategy'],
+    ['Joe','AI Marketing','AI for Marketing / Digital Marketing / AI-powered growth'],
+    ['Rajashri Sai','Co-Founder','Business / Strategy / AI adoption'],
+    ['Dr. Vanita','AI Expert','Artificial Intelligence / Applied AI'],
+    ['Dr. Aparna Rao','AI Expert','Artificial Intelligence / AI applications'],
+    ['Venkatesh Sai','AI Technology','AI Technology / Technology / Applied AI'],
+    ['Sai Pattabiram','AI in Research','AI / Research / Deep Technology'],
+    ['Rajmohan','AI','AI / Industry applications']
+  ];
+  var grid = document.getElementById('expertGrid');
+  experts.forEach(function(e){
+    var initials = e[0].replace('Dr. ','').split(' ').map(function(w){return w[0];}).slice(0,2).join('');
+    var el = document.createElement('div');
+    el.className = 'expert-card';
+    el.innerHTML =
+      '<div class="avatar">'+initials+'</div>' +
+      '<h3>'+e[0]+'</h3>' +
+      '<div class="expert-role">'+e[1]+'</div>' +
+      '<div class="expert-focus">'+e[2]+'</div>' +
+      '<span class="verify-badge">Add photo, LinkedIn &amp; credentials</span>';
+    grid.appendChild(el);
+  });
+</script>
+
+</body>
+</html>

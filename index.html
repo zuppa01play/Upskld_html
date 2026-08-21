@@ -1,0 +1,2882 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UPSKLD — Human Intelligence, Amplified by AI.</title>
+    <style>
+      :root {
+        --green: #7a2e8c;
+        --green-dark: #4b1857;
+        --green-light: #f3e8f6;
+        --gold: #e8a93b;
+        --gold-light: #fcefd8;
+        --cream: #fbf8f5;
+        --white: #ffffff;
+        --text: #1a1a1a;
+        --gray: #5b5b5b;
+        --border: #e8deed;
+        --radius: 16px;
+        --shadow: 0 12px 32px rgba(75, 24, 87, 0.1);
+        --serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+        --sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+      }
+      /* Kept the --green variable name so every existing rule below (buttons, tags,
+     cards, footer, etc.) automatically repaints in the brand purple from the
+     Upskld logo, with gold as the accent — no need to touch each rule. */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--sans);
+        color: var(--text);
+        background: var(--cream);
+        line-height: 1.6;
+        font-size: 16px;
+      }
+      img,
+      svg {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      ul {
+        list-style: none;
+      }
+      .wrap {
+        margin: 0 auto;
+        padding: 0 48px;
+      }
+      section {
+        padding: 88px 0;
+      }
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: var(--serif);
+        font-weight: 400;
+        line-height: 1.2;
+        color: var(--text);
+      }
+      h1 {
+        font-size: 44px;
+      }
+      h2 {
+        font-size: 34px;
+      }
+      h3 {
+        font-size: 22px;
+      }
+      .eyebrow {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .accent {
+        color: var(--gold);
+        font-style: italic;
+      }
+      .lede {
+        font-size: 18px;
+        color: var(--gray);
+        max-width: 640px;
+        margin: 18px 0 0;
+      }
+      .center {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .section-head {
+        max-width: 720px;
+        margin: 0 auto 48px;
+        text-align: center;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 26px;
+        border-radius: 999px;
+        font-size: 15px;
+        font-weight: 600;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.18s ease;
+        white-space: nowrap;
+      }
+      .btn-primary {
+        background: var(--green);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: var(--green-dark);
+        transform: translateY(-1px);
+      }
+      .btn-outline {
+        border-color: var(--green);
+        color: var(--green);
+        background: transparent;
+      }
+      .btn-outline:hover {
+        background: var(--green-light);
+      }
+      .btn-gold {
+        background: var(--gold);
+        color: #fff;
+      }
+      .btn-gold:hover {
+        opacity: 0.9;
+      }
+      .btn-sm {
+        padding: 9px 18px;
+        font-size: 13px;
+      }
+      .btn[disabled],
+      .btn.disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      .tag {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        padding: 5px 12px;
+        border-radius: 999px;
+        background: var(--green-light);
+        color: var(--green-dark);
+      }
+      .verify-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        color: #9a5b00;
+        background: #fff3da;
+        border: 1px dashed #e0a93b;
+        padding: 4px 10px;
+        border-radius: 8px;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 30px;
+        box-shadow: var(--shadow);
+      }
+      .grid {
+        display: grid;
+        gap: 24px;
+      }
+
+      /* NAV */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(251, 248, 245, 0.94);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 10px 28px;
+        margin: 0 auto;
+        min-height: 72px;
+      }
+      /* Logo: fixed height + object-fit so the two-line "Upskld / AI for Growth"
+     lockup stays legible and never gets squashed or overflows at any width. */
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        flex: none;
+      }
+      .logo img {
+        height: 60px;
+        width: auto;
+        max-width: 190px;
+        object-fit: contain;
+        display: block;
+      }
+      .logo svg {
+        width: 26px;
+        height: 26px;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        font-size: 14.5px;
+        font-weight: 600;
+        flex: 1;
+        justify-content: center;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+      }
+      .nav-links li {
+        flex: none;
+      }
+      .nav-links a {
+        color: var(--text);
+        opacity: 0.85;
+        transition:
+          opacity 0.15s,
+          color 0.15s;
+      }
+      .nav-links a:hover {
+        opacity: 1;
+        color: var(--green);
+      }
+      .nav-cta {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex: none;
+      }
+      .nav-login {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--green-dark);
+        opacity: 0.85;
+      }
+      .nav-login:hover {
+        opacity: 1;
+      }
+      .burger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        flex: none;
+        padding: 6px;
+      }
+      .burger span {
+        width: 24px;
+        height: 2px;
+        background: var(--green-dark);
+        border-radius: 2px;
+      }
+
+      /* Tablet and below (≤1024px): switch straight to the burger menu.
+     5 nav links + logo + login + CTA button don't reliably fit in one row
+     on portrait tablets, so this threshold covers those widths too instead
+     of leaving them in a cramped inline row. */
+      @media (max-width: 1024px) {
+        .nav {
+          min-height: 64px;
+          padding: 8px 20px;
+        }
+        .logo img {
+          height: 42px;
+          max-width: 160px;
+        }
+        .nav-links {
+          position: fixed;
+          top: 64px;
+          left: 0;
+          right: 0;
+          /* height (not bottom:0) so the panel is always exactly as tall as
+     the real visible viewport, even when a mobile browser's address bar
+     shrinks or grows. dvh is the fallback-safe modern unit for this. */
+          height: calc(100vh - 64px);
+          height: calc(100dvh - 64px);
+          background: var(--cream);
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: flex-start;
+          padding: 24px 24px;
+          border-bottom: 1px solid var(--border);
+          display: none;
+          gap: 6px;
+          white-space: normal;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+          z-index: 60;
+        }
+        .nav-links li {
+          width: 100%;
+        }
+        .nav-links a {
+          display: block;
+          width: 100%;
+          padding: 14px 4px;
+          font-size: 16px;
+          border-bottom: 1px solid var(--border);
+        }
+        .nav-links.open {
+          display: flex;
+        }
+        .burger {
+          display: flex;
+        }
+        .nav-login {
+          display: none;
+        }
+      }
+      @media (max-width: 420px) {
+        .logo img {
+          height: 36px;
+          max-width: 130px;
+        }
+        .nav .btn-sm {
+          padding: 8px 12px;
+          font-size: 12px;
+        }
+      }
+      /* Locks background scroll while the mobile menu overlay is open, so the
+     page behind it can't scroll underneath and desync from the panel */
+      body.nav-open {
+        overflow: hidden;
+      }
+
+      /* HERO */
+      .hero {
+        padding: 80px 0 60px;
+        background: radial-gradient(
+          circle at 80% 0%,
+          var(--green-light) 0%,
+          var(--cream) 55%
+        );
+      }
+      .hero-inner {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 156px;
+        align-items: center;
+      }
+      .hero h1 {
+        font-size: 46px;
+      }
+      /* AI text-reveal: each word slides/fades in left-to-right in sequence,
+     like the heading is being generated, with a blinking cursor that trails
+     the reveal and disappears once the sentence finishes. */
+      .reveal-heading {
+        display: inline;
+      }
+      .reveal-word {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(4px);
+        transform: translateX(-18px);
+        animation: revealWord 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+        animation-delay: calc(var(--wi, 0) * 90ms + 150ms);
+      }
+      @keyframes revealWord {
+        0% {
+          opacity: 0;
+          filter: blur(4px);
+          transform: translateX(-18px);
+        }
+        60% {
+          filter: blur(0);
+        }
+        100% {
+          opacity: 1;
+          filter: blur(0);
+          transform: translateX(0);
+        }
+      }
+      .reveal-cursor {
+        display: inline-block;
+        width: 3px;
+        height: 0.85em;
+        margin-left: 3px;
+        background: var(--gold);
+        vertical-align: -0.1em;
+        opacity: 0;
+        animation:
+          cursorBlink 0.8s steps(1) infinite,
+          cursorShow 0.3s linear forwards,
+          cursorHide 0.3s linear forwards;
+        animation-delay:
+          var(--cursor-delay, 1.5s), var(--cursor-delay, 1.5s),
+          calc(var(--cursor-delay, 1.5s) + 1.4s);
+      }
+      @keyframes cursorShow {
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes cursorHide {
+        to {
+          opacity: 0;
+        }
+      }
+      @keyframes cursorBlink {
+        50% {
+          opacity: 0.15;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .reveal-word {
+          animation: none !important;
+          opacity: 1 !important;
+          filter: none !important;
+          transform: none !important;
+        }
+        .reveal-cursor {
+          display: none !important;
+        }
+      }
+      .hero .lede {
+        font-size: 19px;
+        max-width: none;
+      }
+      .hero-ctas {
+        display: flex;
+        gap: 14px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+      }
+      .hero-chips {
+        display: flex;
+        gap: 22px;
+        margin-top: 36px;
+        flex-wrap: wrap;
+      }
+      .hero-chip {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13.5px;
+        color: var(--gray);
+        font-weight: 600;
+      }
+      .hero-chip .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--gold);
+        flex: none;
+      }
+      .hero-visual {
+        position: relative;
+        height: 420px;
+        perspective: 1200px;
+      }
+      
+      .photo-card {
+        position: absolute;
+        width: 150px;
+        height: 190px;
+        border-radius: 14px;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14);
+        overflow: hidden; /* keep everything inside the card */
+        will-change: transform, box-shadow;
+        animation: cardFloat 7s ease-in-out infinite;
+        transform-style: preserve-3d;
+      }
+
+      .photo-card img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        filter: brightness(0) invert(1);
+        height: 100%;
+        object-fit: contain;
+        padding: 26px 14px; /* leave room for the label */
+        z-index: 1;
+      }
+
+      /* single source of truth for the label — top-left / bottom-left pill
+     badge that hugs its text instead of stretching full width */
+      .photo-card span {
+        position: absolute;
+        left: 8px;
+        right: auto;
+        max-width: calc(100% - 16px);
+        background: rgba(0, 0, 0, 0.6);
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.25;
+        text-align: left;
+        white-space: normal; /* let long labels wrap instead of clipping */
+        word-break: break-word;
+        z-index: 2;
+      }
+
+      /* top two cards: label pinned to the TOP LEFT */
+      .pc1 span,
+      .pc2 span {
+        top: 5px;
+        bottom: auto;
+      }
+
+      /* bottom three cards: label pinned to the BOTTOM LEFT */
+      .pc3 span,
+      .pc4 span,
+      .pc5 span {
+        bottom: 5px;
+        top: auto;
+      }
+      .photo-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 14px;
+        background: linear-gradient(
+          120deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.35) 48%,
+          rgba(255, 255, 255, 0.55) 50%,
+          rgba(255, 255, 255, 0.35) 52%,
+          transparent 70%
+        );
+        background-size: 260% 260%;
+        background-position: 130% 130%;
+        opacity: 0;
+        animation: cardShine 7s ease-in-out infinite;
+        pointer-events: none;
+      }
+      @keyframes cardFloat {
+        0% {
+          transform: translateY(0) rotate(var(--r, 0deg)) rotateX(0deg);
+          box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14);
+        }
+        25% {
+          transform: translateY(-14px) rotate(calc(var(--r, 0deg) + 2.5deg))
+            rotateX(4deg);
+          box-shadow: 0 24px 34px rgba(122, 46, 140, 0.22);
+        }
+        50% {
+          transform: translateY(-4px) rotate(calc(var(--r, 0deg) - 2deg))
+            rotateX(-3deg);
+          box-shadow: 0 18px 30px rgba(232, 169, 59, 0.2);
+        }
+        75% {
+          transform: translateY(-16px) rotate(calc(var(--r, 0deg) + 1.5deg))
+            rotateX(3deg);
+          box-shadow: 0 26px 36px rgba(122, 46, 140, 0.2);
+        }
+        100% {
+          transform: translateY(0) rotate(var(--r, 0deg)) rotateX(0deg);
+          box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14);
+        }
+      }
+      @keyframes cardShine {
+        0%,
+        55% {
+          opacity: 0;
+          background-position: 130% 130%;
+        }
+        65% {
+          opacity: 1;
+        }
+        80% {
+          opacity: 0;
+          background-position: -30% -30%;
+        }
+        100% {
+          opacity: 0;
+          background-position: -30% -30%;
+        }
+      }
+      .pc1 {
+        top: 0;
+        left: 40px;
+        background: linear-gradient(160deg, #9b4bb0, #7a2e8c);
+        --r: -6deg;
+        animation-delay: 0s;
+      }
+      .pc2 {
+        top: 14px;
+        left: 210px;
+        background: linear-gradient(160deg, #f0c168, #e8a93b);
+        --r: 4deg;
+        z-index: 2;
+        animation-delay: 0.9s;
+      }
+      .pc3 {
+        top: 120px;
+        left: 0;
+        background: linear-gradient(160deg, #5b2270, #4b1857);
+        --r: 3deg;
+        animation-delay: 1.8s;
+      }
+      .pc4 {
+        top: 150px;
+        left: 170px;
+        background: linear-gradient(160deg, #3a1747, #a54bbe);
+        --r: -4deg;
+        z-index: 2;
+        animation-delay: 2.7s;
+      }
+      .pc5 {
+        top: 230px;
+        left: 320px;
+        background: linear-gradient(160deg, #b06fc4, #7a2e8c);
+        --r: 7deg;
+        animation-delay: 3.6s;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .photo-card {
+          animation: none !important;
+        }
+        .photo-card::after {
+          display: none;
+        }
+      }
+
+      /* Tablet: hero stacks to one column, illustration shrinks and repositions
+     so the cards stay inside the narrower width instead of overflowing */
+      @media (max-width: 900px) {
+        .hero-inner {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+        .hero h1 {
+          font-size: 36px;
+        }
+        .hero-visual {
+          height: 260px;
+          margin-top: 8px;
+        }
+        .photo-card {
+          width: 118px;
+          height: 150px;
+          padding: 10px;
+          font-size: 11.5px;
+        }
+        .pc1 {
+          top: 0;
+          left: 14px;
+        }
+        .pc2 {
+          top: 6px;
+          left: 150px;
+        }
+        .pc3 {
+          top: 96px;
+          left: 0;
+        }
+        .pc4 {
+          top: 112px;
+          left: 132px;
+        }
+        .pc5 {
+          top: 170px;
+          left: 236px;
+        }
+      }
+      /* Phone: absolute-positioned illustration becomes an unreliable overlap at
+     narrow widths, so it switches to a simple wrapping row of flat cards */
+      @media (max-width: 600px) {
+        .hero-visual {
+          position: static;
+          height: auto;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        .photo-card {
+          position: relative;
+          width: calc(50% - 5px);
+          height: 110px;
+          padding: 10px;
+          animation: cardFloatSm 7s ease-in-out infinite;
+        }
+        /* .pc1–.pc5 still carry the desktop absolute-positioning top/left
+     values (e.g. pc5's left:320px). CSS still applies top/left to
+     position:relative elements — it just offsets them from their normal
+     flow position instead of anchoring them — which is exactly what was
+     scattering the cards and pushing pc5 off-screen. Reset them here so
+     the cards sit purely where the flex-wrap layout places them. */
+        .pc1,
+        .pc2,
+        .pc3,
+        .pc4,
+        .pc5 {
+          top: auto;
+          left: auto;
+        }
+        .photo-card img {
+          padding: 16px 10px 30px;
+        }
+        .photo-card span {
+          font-size: 11px;
+          padding: 5px 8px;
+        }
+        @keyframes cardFloatSm {
+          0%,
+          100% {
+            transform: translateY(0) scale(1);
+          }
+          50% {
+            transform: translateY(-8px) scale(1.015);
+          }
+        }
+      }
+
+      /* WHY NOW */
+      .why-cards {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .why-cards .card h3 {
+        margin-bottom: 12px;
+        color: var(--green-dark);
+      }
+      .why-cards .card p {
+        color: var(--gray);
+        font-size: 15px;
+      }
+      @media (max-width: 800px) {
+        .why-cards {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* HI+AI */
+      .hi-section {
+        background: var(--green-dark);
+        color: #fff;
+      }
+      .hi-section .eyebrow {
+        color: var(--gold);
+      }
+      .hi-section h2,
+      .hi-section .section-head {
+        color: #fff;
+      }
+      .hi-section .lede {
+        color: #d9e3d6;
+      }
+      .hi-grid {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 30px;
+        align-items: center;
+        margin-top: 50px;
+      }
+      .hi-col {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: var(--radius);
+        padding: 30px;
+      }
+      .hi-col h4 {
+        font-family: var(--sans);
+        font-size: 13px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 18px;
+      }
+      .hi-col ul li {
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 15.5px;
+      }
+      .hi-col ul li:last-child {
+        border-bottom: none;
+      }
+      .hi-plus {
+        font-family: var(--serif);
+        font-size: 40px;
+        color: var(--gold);
+        text-align: center;
+      }
+      .hi-outcome {
+        text-align: center;
+        margin-top: 34px;
+        font-size: 18px;
+        color: #f1ead9;
+        font-style: italic;
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      @media (max-width: 800px) {
+        .hi-grid {
+          grid-template-columns: 1fr;
+        }
+        .hi-plus {
+          transform: rotate(90deg);
+        }
+      }
+
+      /* TABS */
+      .tabs-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 38px;
+      }
+      .tab-btn {
+        padding: 11px 20px;
+        border-radius: 999px;
+        border: 1.5px solid var(--border);
+        background: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--gray);
+        cursor: pointer;
+      }
+      .tab-btn.active {
+        background: var(--green);
+        border-color: var(--green);
+        color: #fff;
+      }
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+      }
+      .job-panel-inner {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 40px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 40px;
+        align-items: center;
+      }
+      .job-panel-inner ul {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px 20px;
+      }
+      .job-panel-inner ul li {
+        font-size: 15px;
+        padding-left: 22px;
+        position: relative;
+      }
+      .job-panel-inner ul li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 8px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+      @media (max-width: 800px) {
+        .job-panel-inner {
+          grid-template-columns: 1fr;
+          padding: 26px;
+        }
+        .job-panel-inner ul {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* COURSES */
+      .course-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .course-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        box-shadow: var(--shadow);
+      }
+      .course-card h3 {
+        font-size: 19px;
+      }
+      .course-card p {
+        font-size: 14px;
+        color: var(--gray);
+        flex: 1;
+      }
+      .course-meta {
+        font-size: 12.5px;
+        color: var(--gray);
+        border-top: 1px dashed var(--border);
+        padding-top: 12px;
+        margin-top: 4px;
+      }
+      @media (max-width: 1000px) {
+        .course-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 600px) {
+        .course-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* EXPERTS */
+      .expert-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .expert-card {
+        position: relative;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 34px 22px 28px;
+        text-align: center;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+          box-shadow 0.35s ease,
+          border-color 0.35s ease;
+      }
+      .expert-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          var(--gold),
+          var(--green),
+          var(--gold)
+        );
+        background-size: 220% 100%;
+        animation: expertBarShift 5s linear infinite;
+      }
+      .expert-card.in-view {
+        animation: expertRise 0.65s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+        animation-delay: calc(var(--i, 0) * 110ms);
+      }
+      .expert-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 22px 40px rgba(122, 46, 140, 0.22);
+        border-color: var(--gold);
+      }
+      @keyframes expertRise {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes expertBarShift {
+        0% {
+          background-position: 0% 0%;
+        }
+        100% {
+          background-position: -220% 0%;
+        }
+      }
+      .avatar-ring {
+        position: relative;
+        width: 128px;
+        height: 128px;
+        margin: 0 auto 18px;
+      }
+      .avatar-ring::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 0deg,
+          var(--gold),
+          var(--green),
+          var(--gold-light),
+          var(--gold)
+        );
+        animation: ringSpin 7s linear infinite;
+        -webkit-mask: radial-gradient(
+          farthest-side,
+          transparent calc(100% - 4px),
+          #fff calc(100% - 4px)
+        );
+        mask: radial-gradient(
+          farthest-side,
+          transparent calc(100% - 4px),
+          #fff calc(100% - 4px)
+        );
+      }
+      .expert-card:hover .avatar-ring::before {
+        animation-duration: 2.2s;
+      }
+      @keyframes ringSpin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .avatar {
+        position: absolute;
+        inset: 6px;
+        margin: 0;
+        border-radius: 50%;
+        background: linear-gradient(160deg, var(--green), var(--gold));
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--serif);
+        font-size: 32px;
+        box-shadow: inset 0 0 0 3px #fff;
+        overflow: hidden;
+      }
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        display: block;
+      }
+      .expert-card h3 {
+        font-size: 16.5px;
+        margin-bottom: 2px;
+      }
+      .expert-role {
+        font-size: 12.5px;
+        color: var(--gold);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 8px;
+      }
+      .expert-focus {
+        font-size: 13px;
+        color: var(--gray);
+        margin-bottom: 6px;
+        min-height: 38px;
+      }
+      .expert-card .verify-badge {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 0;
+        border-width: 1px 0 0;
+        justify-content: center;
+        width: 100%;
+        padding: 9px 10px;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      .expert-card:hover .verify-badge {
+        transform: translateY(0);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .expert-card {
+          opacity: 1 !important;
+          transform: none !important;
+          animation: none !important;
+        }
+        .avatar-ring {
+          animation: none !important;
+        }
+        .expert-card::before {
+          animation: none !important;
+        }
+      }
+      @media (max-width: 1000px) {
+        .expert-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .expert-card {
+          animation-delay: calc(
+            var(--i-tablet, var(--i, 0)) * 110ms
+          ) !important;
+        }
+      }
+      @media (max-width: 600px) {
+        .expert-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* TRUST */
+      .logo-wall {
+        grid-template-columns: repeat(6, 1fr);
+        margin-top: 36px;
+      }
+      .logo-box {
+        height: 70px;
+        border: 1.5px dashed var(--border);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11.5px;
+        color: var(--gray);
+        text-align: center;
+        background: #fff;
+      }
+      .stat-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-top: 36px;
+      }
+      .stat-box {
+        text-align: center;
+        padding: 22px;
+        border-radius: var(--radius);
+        background: #fff;
+        border: 1px solid var(--border);
+      }
+      .stat-box .num {
+        font-family: var(--serif);
+        font-size: 32px;
+        color: var(--green-dark);
+        line-height: 1.1;
+      }
+      .stat-box .num.is-placeholder {
+        color: var(--border);
+      }
+      .stat-box .label {
+        display: block;
+        font-size: 13.5px;
+        color: var(--gray);
+        margin-top: 6px;
+      }
+      .stat-box .verify-badge {
+        margin-top: 12px;
+      }
+      @media (max-width: 800px) {
+        .logo-wall {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 700px) {
+        .stat-row {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 500px) {
+        .stat-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* TESTIMONIALS */
+      .testi-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .testi-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .testi-card.locked {
+        background: repeating-linear-gradient(
+          135deg,
+          #faf7f0,
+          #faf7f0 10px,
+          #f3efe4 10px,
+          #f3efe4 20px
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: var(--gray);
+        font-size: 13.5px;
+        min-height: 170px;
+      }
+      .stars {
+        color: var(--gold);
+        font-size: 14px;
+        letter-spacing: 2px;
+      }
+      .testi-quote {
+        font-size: 14.5px;
+        font-style: italic;
+        color: var(--text);
+      }
+      .testi-name {
+        font-size: 13.5px;
+        font-weight: 700;
+      }
+      .testi-role {
+        font-size: 12px;
+        color: var(--gray);
+      }
+      @media (max-width: 1000px) {
+        .testi-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 600px) {
+        .testi-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* CORPORATE */
+      .corp-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        align-items: center;
+      }
+      .corp-form {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 32px;
+        box-shadow: var(--shadow);
+      }
+      .corp-form label {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        margin: 14px 0 6px;
+      }
+      .corp-form label:first-child {
+        margin-top: 0;
+      }
+      .corp-form input,
+      .corp-form select {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 9px;
+        font-size: 14px;
+        font-family: var(--sans);
+      }
+      .checkbox-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        color: #1a1a1a;
+        font-size: 13.5px;
+        font-weight: 500;
+      }
+      .checkbox-row label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 500;
+        margin: 0;
+      }
+      @media (max-width: 900px) {
+        .corp-wrap {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+      }
+
+      /* JOURNEY */
+      .journey-grid {
+        grid-template-columns: repeat(4, 1fr);
+        position: relative;
+      }
+      .journey-step {
+        text-align: center;
+      }
+      .journey-num {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: var(--green);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--serif);
+        font-size: 19px;
+        margin: 0 auto 16px;
+      }
+      .journey-step h3 {
+        font-size: 17px;
+        margin-bottom: 8px;
+      }
+      .journey-step p {
+        font-size: 14px;
+        color: var(--gray);
+      }
+      @media (max-width: 900px) {
+        .journey-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* WHY UPSKLD */
+      .compare-grid {
+        grid-template-columns: repeat(4, 1fr);
+        align-items: stretch;
+      }
+      .compare-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+      }
+      .compare-card.highlight {
+        background: var(--green-dark);
+        color: #fff;
+        border-color: var(--green-dark);
+      }
+      .compare-card h3 {
+        font-size: 16px;
+        margin-bottom: 14px;
+      }
+      .compare-card.highlight h3 {
+        color: var(--gold);
+      }
+      .compare-card p {
+        font-size: 13.5px;
+        color: var(--gray);
+        margin-bottom: 8px;
+      }
+      .compare-card.highlight p {
+        color: #dfe8dc;
+      }
+      .compare-card p b {
+        color: var(--text);
+      }
+      .compare-card.highlight p b {
+        color: #fff;
+      }
+      @media (max-width: 1000px) {
+        .compare-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 600px) {
+        .compare-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* FAQ */
+      .faq-list {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      .faq-item {
+        border-bottom: 1px solid var(--border);
+      }
+      .faq-q {
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        padding: 20px 0;
+        font-family: var(--serif);
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        color: var(--text);
+      }
+      .faq-q .plus {
+        font-size: 22px;
+        color: var(--gold);
+        transition: transform 0.2s;
+        flex: none;
+      }
+      .faq-item.open .plus {
+        transform: rotate(45deg);
+      }
+      .faq-a {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.25s ease;
+        font-size: 14.5px;
+        color: var(--gray);
+      }
+      .faq-item.open .faq-a {
+        max-height: 260px;
+        padding-bottom: 20px;
+      }
+      .verify-inline {
+        display: block;
+        margin-top: 8px;
+      }
+
+      /* FINAL CTA */
+      .final-cta {
+        background: var(--green-dark);
+        color: #fff;
+      }
+      .final-cta .wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 56px;
+        align-items: center;
+      }
+      .final-cta h2 {
+        color: #fff;
+      }
+      .final-cta .lede {
+        color: #d9e3d6;
+        max-width: none;
+      }
+      .booking-form {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 28px;
+        color: var(--text);
+        box-shadow: var(--shadow);
+      }
+      .booking-form label {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        margin: 12px 0 6px;
+      }
+      .booking-form label:first-child {
+        margin-top: 0;
+      }
+      .booking-form input,
+      .booking-form select {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 9px;
+        font-size: 14px;
+        font-family: var(--sans);
+      }
+      .booking-form .btn {
+        width: 100%;
+        justify-content: center;
+        margin-top: 18px;
+      }
+      .booking-note {
+        font-size: 11.5px;
+        color: var(--gray);
+        margin-top: 10px;
+        text-align: center;
+      }
+      @media (max-width: 900px) {
+        .final-cta .wrap {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+      }
+
+      /* FOOTER */
+      footer {
+        background: linear-gradient(rgba(75, 24, 87, 1) 54%);
+        color: #d8cadc;
+        padding: 64px 0 24px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr 1fr 1fr;
+        gap: 40px;
+      }
+      .footer-grid h4 {
+        color: #fff;
+        font-family: var(--sans);
+        font-size: 13px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      .footer-grid a {
+        display: block;
+        font-size: 14px;
+        color: #bfa9c4;
+        padding: 5px 0;
+      }
+      .footer-grid a:hover {
+        color: #fff;
+      }
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--serif);
+        font-size: 22px;
+        color: #fff;
+        margin-bottom: 14px;
+        letter-spacing: 0.5px;
+      }
+      .footer-logo-mark {
+        width: 30px;
+        height: 30px;
+        flex: none;
+        filter: drop-shadow(0 0 0 rgba(232, 169, 59, 0));
+        animation: logoGlow 4.5s ease-in-out infinite;
+      }
+      .footer-logo-mark .fl-core {
+        transform-origin: 12px 12px;
+        animation: logoPulse 4.5s ease-in-out infinite;
+      }
+      .footer-logo-mark .fl-vein {
+        stroke-dasharray: 22;
+        stroke-dashoffset: 22;
+        animation: logoDraw 4.5s ease-in-out infinite;
+      }
+      @keyframes logoGlow {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 0 rgba(232, 169, 59, 0));
+        }
+        50% {
+          filter: drop-shadow(0 0 6px rgba(232, 169, 59, 0.65));
+        }
+      }
+      @keyframes logoPulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.06);
+        }
+      }
+      @keyframes logoDraw {
+        0% {
+          stroke-dashoffset: 22;
+        }
+        45%,
+        100% {
+          stroke-dashoffset: 0;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .footer-logo-mark,
+        .footer-logo-mark .fl-core,
+        .footer-logo-mark .fl-vein {
+          animation: none !important;
+        }
+      }
+      .footer-tagline {
+        font-size: 13.5px;
+        color: #a693ab;
+        max-width: 280px;
+      }
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 48px;
+        padding-top: 22px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        font-size: 12.5px;
+        color: #8f7c93;
+      }
+      @media (max-width: 800px) {
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .template-note {
+        background: #fff3da;
+        border-bottom: 1px solid #e0a93b;
+        color: #7a4a00;
+        font-size: 13px;
+        text-align: center;
+        padding: 9px 20px;
+      }
+
+      /* TABLET PASS (≤1024px) — bridges the gap between desktop spacing and
+     the phone pass below. Without this, tablets (600–1024px) were stuck
+     with full 48px page margins and 88px section padding, which read as
+     oversized/empty on a tablet screen. */
+      @media (max-width: 1024px) {
+        .wrap {
+          padding: 0 32px;
+        }
+        section {
+          padding: 64px 0;
+        }
+        .journey-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      /* GLOBAL PHONE PASS (≤600px) — every section above only had tablet-level
+     breakpoints (800/900/1000px), so on actual phones type ran large, section
+     padding stayed desktop-sized, and CTA buttons didn't reach full width. */
+      @media (max-width: 600px) {
+        .avatar-ring {
+          width: 100px;
+          height: 100px;
+        }
+        .avatar {
+          font-size: 26px;
+        }
+        section {
+          padding: 52px 0;
+        }
+        .wrap {
+          padding: 0 20px;
+        }
+        h1 {
+          font-size: 28px;
+        }
+        h2 {
+          font-size: 24px;
+        }
+        h3 {
+          font-size: 19px;
+        }
+        .lede {
+          font-size: 15px;
+        }
+        .section-head {
+          margin-bottom: 34px;
+        }
+        .btn {
+          padding: 12px 20px;
+          font-size: 14px;
+        }
+        .hero {
+          padding: 36px 0 40px;
+        }
+        .hero-ctas .btn {
+          width: 100%;
+          justify-content: center;
+        }
+        .hero-chips {
+          gap: 12px 18px;
+        }
+        .tabs-nav {
+          gap: 8px;
+        }
+        .tab-btn {
+          padding: 9px 14px;
+          font-size: 13px;
+        }
+        .card,
+        .course-card,
+        .expert-card,
+        .testi-card,
+        .compare-card {
+          padding: 20px;
+        }
+        .corp-form,
+        .booking-form {
+          padding: 22px;
+        }
+        .stat-box {
+          padding: 18px;
+        }
+        .stat-box .num {
+          font-size: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="nav">
+        <a href="#top" class="logo">
+          <img src="image/logo1.png" alt="logo" />
+        </a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#ai-for-your-job">AI for Your Job</a></li>
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#experts">Experts</a></li>
+          <li><a href="#corporate">Organisations</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <div class="nav-cta">
+          <a href="#" class="nav-login">Login</a>
+          <a href="#final-cta" class="btn btn-primary btn-sm"
+            >Book Free Session</a
+          >
+          <button class="burger" id="burgerBtn" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="wrap hero-inner">
+          <div>
+            <span class="eyebrow">Human Intelligence + AI</span>
+            <h1 id="heroHeadline" data-reveal-text>
+              AI won’t replace your experience. But knowing how to use it will
+              change what you do with it.
+            </h1>
+            <p class="lede">
+              UPSKLD helps working professionals, business leaders and students
+              apply AI to the job they already do — no coding, no jargon, no
+              chatbot-building required.
+            </p>
+            <div class="hero-ctas">
+              <a href="#ai-for-your-job" class="btn btn-primary"
+                >Explore AI for Your Role →</a
+              >
+              <a href="#learning-journey" class="btn btn-outline"
+                >See How It Works</a
+              >
+            </div>
+            <div class="hero-chips">
+              <div class="hero-chip">
+                <span class="dot"></span>Job-specific tracks, not tool tutorials
+              </div>
+              <div class="hero-chip">
+                <span class="dot"></span>No coding, ever
+              </div>
+              <div class="hero-chip">
+                <span class="dot"></span>Vernacular delivery available
+              </div>
+            </div>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="photo-card pc1">
+              <img src="image/increase.png" /><span>Sales &amp; Marketing</span>
+            </div>
+            <div class="photo-card pc2">
+              <img src="image/leadership.png" /><span>Leadership</span>
+            </div>
+            <div class="photo-card pc3">
+              <img src="image/graduation.png" /><span>Students</span>
+            </div>
+            <div class="photo-card pc4">
+              <img src="image/hr-manager.png" /><span>HR &amp; Finance</span>
+            </div>
+            <div class="photo-card pc5">
+              <img src="image/entrepreneur.png" /><span>Entrepreneurs</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY AI WHY NOW -->
+      <section id="why-now">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="eyebrow">Why AI, Why Now?</span>
+            <h2>
+              AI didn’t ask permission. It’s already
+              <span class="accent">in the room.</span>
+            </h2>
+            <p class="lede center">
+              Across sales calls, marketing briefs, HR shortlists, finance
+              models and leadership meetings, AI is already being used —
+              sometimes openly, often quietly.
+            </p>
+          </div>
+          <div class="grid why-cards">
+            <div class="card">
+              <h3>It’s already happening</h3>
+              <p>
+                Some professionals are drafting faster. Some are researching in
+                minutes instead of hours. Some are making decisions with more
+                information than they had last year. This isn’t a future
+                scenario — it’s happening in the same roles, at the same
+                companies, right now.
+              </p>
+            </div>
+            <div class="card">
+              <h3>The real risk</h3>
+              <p>
+                The risk isn’t that AI takes over your job. It’s simpler:
+                professionals who know how to work with AI may start moving
+                faster than professionals who don’t — inside the very same role.
+              </p>
+            </div>
+            <div class="card">
+              <h3>The real opportunity</h3>
+              <p>
+                You can be one of the professionals moving faster. That’s the
+                entire idea behind UPSKLD — a practical way to start, at your
+                own pace.
+              </p>
+            </div>
+          </div>
+          <div class="center" style="margin-top: 36px">
+            <a href="#ai-for-your-job" class="btn btn-outline"
+              >See How AI Applies to Your Job</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- HUMAN INTELLIGENCE + AI -->
+      <section class="hi-section" id="philosophy">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="eyebrow">Our Philosophy</span>
+            <h2>
+              The future isn’t AI replacing you. It’s
+              <span class="accent">you, amplified.</span>
+            </h2>
+            <p class="lede center">
+              AI can generate, analyse, automate and accelerate. What it can’t
+              do is replace judgement, creativity, context, empathy, leadership
+              or the ability to make a hard call with incomplete information.
+              Those still belong to you.
+            </p>
+          </div>
+          <div class="hi-grid">
+            <div class="hi-col">
+              <h4>What AI Brings</h4>
+              <ul>
+                <li>Generates first drafts &amp; ideas</li>
+                <li>Analyses data at speed</li>
+                <li>Automates repetitive work</li>
+                <li>Accelerates research</li>
+              </ul>
+            </div>
+            <div class="hi-plus">+</div>
+            <div class="hi-col">
+              <h4>What You Bring</h4>
+              <ul>
+                <li>Judgement &amp; decision-making</li>
+                <li>Creativity &amp; strategic thinking</li>
+                <li>Context &amp; domain expertise</li>
+                <li>Empathy &amp; leadership</li>
+              </ul>
+            </div>
+          </div>
+          <p class="hi-outcome">
+            “Not tools for their own sake. Not hype. Just your job, done with a
+            new capability attached to it.”
+          </p>
+          <div class="center" style="margin-top: 34px">
+            <a href="#why-upskld" class="btn btn-gold"
+              >See the UPSKLD Approach</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- AI FOR YOUR JOB -->
+      <section id="ai-for-your-job">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="eyebrow">Find Your Track</span>
+            <h2>
+              Don’t learn AI for its own sake. Learn how it applies to
+              <span class="accent">the work you already do.</span>
+            </h2>
+            <p class="lede center">
+              A marketing professional doesn’t need to build a chatbot. A
+              salesperson doesn’t need to learn Python. What they need is
+              simpler: to know exactly where AI fits into the work they already
+              do well.
+            </p>
+          </div>
+
+          <div class="tabs-nav" id="jobTabs">
+            <button class="tab-btn active" data-tab="sales">Sales</button>
+            <button class="tab-btn" data-tab="marketing">Marketing</button>
+            <button class="tab-btn" data-tab="hr">HR</button>
+            <button class="tab-btn" data-tab="finance">Finance</button>
+            <button class="tab-btn" data-tab="leadership">Leadership</button>
+            <button class="tab-btn" data-tab="students">Students</button>
+          </div>
+
+          <div class="tab-panel active" data-panel="sales">
+            <div class="job-panel-inner">
+              <div>
+                <span class="tag">AI for Sales</span>
+                <h3 style="margin-top: 14px">
+                  Move faster from research to relationship.
+                </h3>
+                <a
+                  href="#courses"
+                  class="btn btn-primary btn-sm"
+                  style="margin-top: 18px"
+                  >Explore AI for Sales</a
+                >
+              </div>
+              <ul>
+                <li>Lead research</li>
+                <li>Prospect analysis</li>
+                <li>Personalised outreach</li>
+                <li>Sales proposals</li>
+                <li>Meeting preparation</li>
+                <li>Follow-up</li>
+                <li>CRM productivity</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="marketing">
+            <div class="job-panel-inner">
+              <div>
+                <span class="tag">AI for Marketing</span>
+                <h3 style="margin-top: 14px">Create more, guess less.</h3>
+                <a
+                  href="#courses"
+                  class="btn btn-primary btn-sm"
+                  style="margin-top: 18px"
+                  >Explore AI for Marketing</a
+                >
+              </div>
+              <ul>
+                <li>Campaign ideation</li>
+                <li>Content creation</li>
+                <li>Customer research</li>
+                <li>Market intelligence</li>
+                <li>SEO</li>
+                <li>Social media</li>
+                <li>Campaign analysis</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="hr">
+            <div class="job-panel-inner">
+              <div>
+                <span class="tag">AI for HR</span>
+                <h3 style="margin-top: 14px">
+                  Spend less time on process, more on people.
+                </h3>
+                <a
+                  href="#courses"
+                  class="btn btn-primary btn-sm"
+                  style="margin-top: 18px"
+                  >Explore AI for HR</a
+                >
+              </div>
+              <ul>
+                <li>Recruitment</li>
+                <li>Job descriptions</li>
+                <li>Candidate screening support</li>
+                <li>Employee communication</li>
+                <li>Learning &amp; development</li>
+                <li>Workforce analytics</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="finance">
+            <div class="job-panel-inner">
+              <div>
+                <span class="tag">AI for Finance</span>
+                <h3 style="margin-top: 14px">
+                  Faster numbers, sharper insight.
+                </h3>
+                <a
+                  href="#courses"
+                  class="btn btn-primary btn-sm"
+                  style="margin-top: 18px"
+                  >Explore AI for Finance</a
+                >
+              </div>
+              <ul>
+                <li>Reporting</li>
+                <li>Data analysis</li>
+                <li>Financial insights</li>
+                <li>Documentation</li>
+                <li>Forecasting support</li>
+                <li>Workflow automation</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="leadership">
+            <div class="job-panel-inner">
+              <div>
+                <span class="tag">AI for Leadership</span>
+                <h3 style="margin-top: 14px">
+                  Decide with more information, not more noise.
+                </h3>
+                <a
+                  href="#courses"
+                  class="btn btn-primary btn-sm"
+                  style="margin-top: 18px"
+                  >Explore AI for Leaders</a
+                >
+              </div>
+              <ul>
+                <li>Decision support</li>
+                <li>Research</li>
+                <li>Strategic analysis</li>
+                <li>Meeting intelligence</li>
+                <li>Productivity</li>
+                <li>Scenario planning</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="students">
+            <div class="job-panel-inner">
+              <div>
+                <span class="tag">AI for Students</span>
+                <h3 style="margin-top: 14px">
+                  Walk in AI-ready, not just AI-curious.
+                </h3>
+                <a
+                  href="#courses"
+                  class="btn btn-primary btn-sm"
+                  style="margin-top: 18px"
+                  >Start Your AI Journey</a
+                >
+              </div>
+              <ul>
+                <li>Research</li>
+                <li>Learning</li>
+                <li>Presentations</li>
+                <li>Writing</li>
+                <li>Productivity</li>
+                <li>Career preparation</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COURSES -->
+      <section id="courses" style="background: var(--green-light)">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="eyebrow">Courses</span>
+            <h2>
+              Built around <span class="accent">outcomes</span>, not tools.
+            </h2>
+            <p class="lede center">
+              “Learn ChatGPT” teaches a tool. “AI for Sales” teaches an outcome
+              — and includes whichever tools help you get there, taught in
+              context.
+            </p>
+          </div>
+          <div class="grid course-grid">
+            <div class="course-card">
+              <span class="tag">Professionals</span>
+              <h3>AI for Sales</h3>
+              <p>
+                Lead research, outreach and proposals — faster, without losing
+                the personal touch.
+              </p>
+              <div class="course-meta">
+                <span class="verify-badge">Add pricing &amp; curriculum</span>
+              </div>
+              <a href="#final-cta" class="btn btn-outline btn-sm"
+                >Reserve Free Counselling</a
+              >
+            </div>
+            <div class="course-card">
+              <span class="tag">Professionals</span>
+              <h3>AI for Marketing</h3>
+              <p>
+                Campaign ideation, content and market intelligence, built around
+                real briefs.
+              </p>
+              <div class="course-meta">
+                <span class="verify-badge">Add pricing &amp; curriculum</span>
+              </div>
+              <a href="#final-cta" class="btn btn-outline btn-sm"
+                >Reserve Free Counselling</a
+              >
+            </div>
+            <div class="course-card">
+              <span class="tag">Leadership</span>
+              <h3>AI for Business Leaders</h3>
+              <p>
+                Evaluate AI adoption, lead with confidence, without becoming a
+                technologist.
+              </p>
+              <div class="course-meta">
+                <span class="verify-badge">Add pricing &amp; curriculum</span>
+              </div>
+              <a href="#final-cta" class="btn btn-outline btn-sm"
+                >Reserve Free Counselling</a
+              >
+            </div>
+            <div class="course-card">
+              <span class="tag">Professionals</span>
+              <h3>AI for HR</h3>
+              <p>
+                Recruitment, communication and L&amp;D, with less manual
+                process.
+              </p>
+              <div class="course-meta">
+                <span class="verify-badge">Add pricing &amp; curriculum</span>
+              </div>
+              <a href="#final-cta" class="btn btn-outline btn-sm"
+                >Reserve Free Counselling</a
+              >
+            </div>
+            <div class="course-card">
+              <span class="tag">Professionals</span>
+              <h3>AI for Finance</h3>
+              <p>
+                Reporting, forecasting support and documentation, done faster.
+              </p>
+              <div class="course-meta">
+                <span class="verify-badge">Add pricing &amp; curriculum</span>
+              </div>
+              <a href="#final-cta" class="btn btn-outline btn-sm"
+                >Reserve Free Counselling</a
+              >
+            </div>
+            <div class="course-card">
+              <span class="tag">Everyone</span>
+              <h3>AI for Productivity</h3>
+              <p>
+                Practical daily-work habits that apply across any role or team.
+              </p>
+              <div class="course-meta">
+                <span class="verify-badge">Add pricing &amp; curriculum</span>
+              </div>
+              <a href="#final-cta" class="btn btn-outline btn-sm"
+                >Reserve Free Counselling</a
+              >
+            </div>
+            <div class="course-card">
+              <span class="tag">Founders</span>
+              <h3>AI for Entrepreneurs</h3>
+              <p>
+                Build, automate and scale a lean operation using AI across the
+                business.
+              </p>
+              <div class="course-meta">
+                <span class="verify-badge">Add pricing &amp; curriculum</span>
+              </div>
+              <a href="#final-cta" class="btn btn-outline btn-sm"
+                >Reserve Free Counselling</a
+              >
+            </div>
+            <div class="course-card" style="border-color: var(--gold)">
+              <span
+                class="tag"
+                style="background: var(--gold-light); color: #7a5300"
+                >Live example</span
+              >
+              <h3>AI for Students</h3>
+              <p>
+                Graduate more employable than your syllabus alone would make
+                you. AI fundamentals, academic &amp; research assistance, resume
+                building, career guidance.
+              </p>
+              <div class="course-meta">
+                Live + self-paced · 4–6 weeks · ₹12,000–₹15,000 · English +
+                regional · Certificate on completion
+              </div>
+              <a href="#final-cta" class="btn btn-primary btn-sm"
+                >Reserve Free Counselling</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERTS -->
+      <section id="experts">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="eyebrow">Expert Ecosystem</span>
+            <h2>
+              Learn from people who understand AI
+              <span class="accent">beyond the hype.</span>
+            </h2>
+            <p class="lede center">
+              AI intersects technology, business, marketing, research and
+              leadership — so UPSKLD brings together people from across that
+              map, not a single kind of expert.
+            </p>
+          </div>
+          <div class="grid expert-grid" id="expertGrid"></div>
+        </div>
+      </section>
+
+      <!-- TRUST -->
+      <section style="background: var(--green-light)">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="eyebrow">Trust &amp; Credibility</span>
+            <h2>
+              Trusted by people who take AI
+              <span class="accent">seriously.</span>
+            </h2>
+            <p class="lede center">
+              We’re not going to invent numbers to make this page look bigger
+              than it is. As real evidence becomes available, it replaces every
+              placeholder below.
+            </p>
+          </div>
+          <div class="stat-row" id="statRow"></div>
+          <!-- <div class="grid logo-wall" >
+            <div class="logo-box">Add logo</div>
+            <div class="logo-box">Add logo</div>
+            <div class="logo-box">Add logo</div>
+            <div class="logo-box">Add logo</div>
+            <div class="logo-box">Add logo</div>
+            <div class="logo-box">Add logo</div>
+          </div> -->
+          <p class="lede center" style="margin-top: 34px">
+            AI is used differently by a marketing team in Mumbai, a finance
+            department in Dubai, and a university placement cell in Bengaluru.
+            Evidence from professionals, leaders, researchers and institutions
+            across that range shows the approach holds up across real, different
+            jobs — not just one type of learner.
+          </p>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section id="testimonials">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="eyebrow">Early Learners</span>
+            <h2>What early learners are <span class="accent">saying.</span></h2>
+            <p class="lede center">
+              UPSKLD is a new venture. These are real reflections from our
+              earliest learners — we’ll keep adding to them as more people
+              complete their courses.
+            </p>
+          </div>
+          <div class="grid testi-grid">
+            <div class="testi-card">
+              <div class="stars">★★★★★</div>
+              <p class="testi-quote">
+                “I never thought I’d use AI as a B.Com student — now I use it
+                every week for my project work and I feel ready for placements.”
+              </p>
+              <div>
+                <div class="testi-name">Sharanya Desai</div>
+                <div class="testi-role">B.Com Student</div>
+              </div>
+              <span class="verify-badge">Verify quote &amp; consent</span>
+            </div>
+            <div class="testi-card">
+              <div class="stars">★★★★★</div>
+              <p class="testi-quote">
+                “I was worried AI would replace my role in operations. This
+                course showed me exactly where I can use it to my advantage
+                instead.”
+              </p>
+              <div>
+                <div class="testi-name">Rakesh Patel</div>
+                <div class="testi-role">Operations</div>
+              </div>
+              <span class="verify-badge">Verify quote &amp; consent</span>
+            </div>
+            <div class="testi-card">
+              <div class="stars">★★★★★</div>
+              <p class="testi-quote">
+                “I thought AI might replace my role in operations. This course
+                helped me see how I can use AI to make my work smarter and more
+                effective.”
+              </p>
+              <div>
+                <div class="testi-name">Santhiya PK</div>
+                <div class="testi-role">Developer</div>
+              </div>
+              <span class="verify-badge">Verify quote &amp; consent</span>
+            </div>
+
+            <div class="testi-card">
+              <div class="stars">★★★★★</div>
+              <p class="testi-quote">
+                “I used to see AI as a threat to my role in operations. This
+                course showed me how to turn AI into a powerful advantage in my
+                everyday work.”
+              </p>
+              <div>
+                <div class="testi-name">Keerthi</div>
+                <div class="testi-role">Marketing</div>
+              </div>
+              <span class="verify-badge">Verify quote &amp; consent</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CORPORATE -->
+      <section
+        id="corporate"
+        style="background: var(--green-dark); color: #fff"
+      >
+        <div class="wrap corp-wrap">
+          <div>
+            <span class="eyebrow">For Organisations</span>
+            <h2 style="color: #fff">
+              Bring your whole team up to speed —
+              <span class="accent">by function, not by guesswork.</span>
+            </h2>
+            <p class="lede" style="color: #d9e3d6">
+              Individual employees are probably already experimenting with AI —
+              unevenly, and without guidance. UPSKLD’s organisational tracks
+              mirror our individual courses, so training maps directly onto how
+              each department already works.
+            </p>
+            <p class="lede" style="color: #d9e3d6">
+              AI for Sales teams. AI for Marketing teams. AI for HR, Finance and
+              Leadership. Not a generic “AI 101” for everyone.
+            </p>
+          </div>
+          <form
+            class="corp-form"
+            onsubmit="
+              event.preventDefault();
+              alert(
+                'Connect this form to your CRM or inbox before publishing.',
+              );
+            "
+          >
+            <label>Company name</label>
+            <input type="text" placeholder="e.g. Acme Technologies" />
+            <label>Team size</label>
+            <select>
+              <option>1–10</option>
+              <option>11–50</option>
+              <option>51–200</option>
+              <option>200+</option>
+            </select>
+            <label>Function(s) of interest</label>
+            <div class="checkbox-row">
+              <label><input type="checkbox" />Sales</label>
+              <label><input type="checkbox" />Marketing</label>
+              <label><input type="checkbox" />HR</label>
+              <label><input type="checkbox" />Finance</label>
+              <label><input type="checkbox" />Leadership</label>
+            </div>
+            <label>Work email</label>
+            <input type="email" placeholder="you@company.com" />
+            <button
+              class="btn btn-gold"
+              style="width: 100%; justify-content: center; margin-top: 20px"
+            >
+              Talk to Us About Team Training
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- LEARNING JOURNEY -->
+      <section id="learning-journey">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="eyebrow">Your Path</span>
+            <h2>
+              From uncertain about AI to
+              <span class="accent">confident with it</span> — in four steps.
+            </h2>
+          </div>
+          <div class="grid journey-grid">
+            <div class="journey-step">
+              <div class="journey-num">1</div>
+              <h3>Recognise</h3>
+              <p>
+                See where AI already touches your role — in a free 15-minute
+                roadmap call.
+              </p>
+            </div>
+            <div class="journey-step">
+              <div class="journey-num">2</div>
+              <h3>Get Matched</h3>
+              <p>
+                Land on your job-specific track — no guessing which course
+                applies to you.
+              </p>
+            </div>
+            <div class="journey-step">
+              <div class="journey-num">3</div>
+              <h3>Learn by Doing</h3>
+              <p>
+                Every module ends with something usable in your actual work that
+                week.
+              </p>
+            </div>
+            <div class="journey-step">
+              <div class="journey-num">4</div>
+              <h3>Apply &amp; Certify</h3>
+              <p>
+                Walk away with a shareable Certificate of Completion, and a
+                habit of using AI well.
+              </p>
+            </div>
+          </div>
+          <div class="center" style="margin-top: 40px">
+            <a href="#final-cta" class="btn btn-primary"
+              >See the Full Process</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY UPSKLD -->
+      <section id="why-upskld" style="background: var(--green-light)">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="eyebrow">Why UPSKLD</span>
+            <h2>
+              Not just a YouTube tutorial, or a
+              <span class="accent">coding bootcamp.</span>
+            </h2>
+            <p class="lede center">
+              There’s no shortage of ways to learn about AI right now. Most of
+              them weren’t built for you.
+            </p>
+          </div>
+          <div class="grid compare-grid">
+            <div class="compare-card">
+              <h3>Generic AI Courses</h3>
+              <p><b>Teaches:</b> AI concepts in general</p>
+              <p><b>Best for:</b> Broad awareness</p>
+              <p><b>Not built for:</b> Your specific job</p>
+            </div>
+            <div class="compare-card">
+              <h3>YouTube / ChatGPT Tutorials</h3>
+              <p><b>Teaches:</b> One tool or feature</p>
+              <p><b>Best for:</b> Quick, free tips</p>
+              <p><b>Not built for:</b> A structured workflow</p>
+            </div>
+            <div class="compare-card">
+              <h3>Coding Bootcamps</h3>
+              <p><b>Teaches:</b> How to build AI systems</p>
+              <p><b>Best for:</b> Becoming a developer</p>
+              <p><b>Not built for:</b> Improving your current job</p>
+            </div>
+            <div class="compare-card highlight">
+              <h3>UPSKLD</h3>
+              <p><b>Teaches:</b> AI applied to your job</p>
+              <p><b>Best for:</b> Working professionals &amp; leaders</p>
+              <p><b>Built for:</b> The work you already do</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="eyebrow">FAQ</span>
+            <h2>Questions before <span class="accent">you start.</span></h2>
+          </div>
+          <div class="faq-list" id="faqList">
+            <div class="faq-item open">
+              <button class="faq-q">
+                <span
+                  >Do I need any technical background or coding
+                  experience?</span
+                ><span class="plus">+</span>
+              </button>
+              <div class="faq-a">
+                No. Every UPSKLD course is built for non-technical
+                professionals. If you can use email and a spreadsheet, you can
+                do this.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>Will this replace expertise I already have?</span
+                ><span class="plus">+</span>
+              </button>
+              <div class="faq-a">
+                No — it’s built to work alongside it. UPSKLD teaches you to use
+                AI to extend your judgement and experience, not substitute for
+                them.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>How much time does a course take?</span
+                ><span class="plus">+</span>
+              </button>
+              <div class="faq-a">
+                Typical duration and weekly time commitment vary by track.<span
+                  class="verify-badge verify-inline"
+                  >Confirm duration per track</span
+                >
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>What will I actually be able to do afterwards?</span
+                ><span class="plus">+</span>
+              </button>
+              <div class="faq-a">
+                You’ll finish with practical, role-specific AI workflows you can
+                use immediately in your job — not just theoretical familiarity
+                with AI.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>Is this only for people early in their career?</span
+                ><span class="plus">+</span>
+              </button>
+              <div class="faq-a">
+                No. UPSKLD has tracks for students, working professionals,
+                business leaders, entrepreneurs and organisations — each built
+                around the work that group actually does.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>What does the free session involve?</span
+                ><span class="plus">+</span>
+              </button>
+              <div class="faq-a">
+                A short, no-pressure conversation to understand your role and
+                map you to the right track — not a sales pitch.<span
+                  class="verify-badge verify-inline"
+                  >Confirm exact call duration</span
+                >
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">
+                <span>Do I get a certificate?</span><span class="plus">+</span>
+              </button>
+              <div class="faq-a">
+                Yes — a shareable Certificate of Completion for every course
+                track.<span class="verify-badge verify-inline"
+                  >Confirm any partner recognition claims</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="center" style="margin-top: 36px">
+            <a href="#final-cta" class="btn btn-outline"
+              >Still Have Questions? Book a Free Call</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- FINAL CTA -->
+      <section class="final-cta" id="final-cta">
+        <div class="wrap">
+          <div>
+            <span class="eyebrow">Free Career Counselling</span>
+            <h2>
+              You don’t need to become an AI expert.<br />You need to get better
+              at what you already do — <span class="accent">with AI.</span>
+            </h2>
+            <p class="lede">
+              A practical, job-specific way to work with AI, at your pace,
+              without needing to become someone else to do it. No pitch. No
+              pressure. Just a short conversation to map your AI roadmap.
+            </p>
+          </div>
+          <form
+            class="booking-form"
+            onsubmit="
+              event.preventDefault();
+              alert(
+                'Connect this form to your booking/CRM system before publishing.',
+              );
+            "
+          >
+            <label>Full name</label>
+            <input type="text" placeholder="e.g. Priya Sharma" />
+            <label>Phone / WhatsApp</label>
+            <input type="tel" placeholder="+91" />
+            <label>Email</label>
+            <input type="email" placeholder="you@example.com" />
+            <label>I am a…</label>
+            <select>
+              <option>Working professional</option>
+              <option>Business leader</option>
+              <option>Student</option>
+              <option>Entrepreneur</option>
+              <option>Representing an organisation</option>
+            </select>
+            <button type="submit" class="btn btn-primary">
+              Book My Free Slot →
+            </button>
+            <p class="booking-note">
+              By submitting you agree to be contacted via WhatsApp/Email/call
+              for your session.
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap footer-grid">
+        <div>
+          <div class="footer-logo">
+            <a href="#top" class="logo">
+              <img src="image/logo1.png" alt="logo" />
+            </a>
+          </div>
+          <p class="footer-tagline">
+            Human Intelligence, Amplified by AI. Practical AI courses for the
+            work you already do — sales, marketing, HR, finance, leadership and
+            more.
+          </p>
+        </div>
+        <div>
+          <h4>Courses</h4>
+          <a href="#courses">AI for Sales</a>
+          <a href="#courses">AI for Marketing</a>
+          <a href="#courses">AI for Leaders</a>
+          <a href="#courses">AI for Students</a>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <a href="#philosophy">Our Philosophy</a>
+          <a href="#experts">Experts</a>
+          <a href="#corporate">Organisations</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <a href="#">[Add email]</a>
+          <a href="#">[Add WhatsApp]</a>
+          <a href="#final-cta">Book Free Session</a>
+        </div>
+      </div>
+      <div class="wrap footer-bottom">
+        <span>© 2026 UPSKLD. [Add legal entity line.]</span>
+        <span>Privacy · Terms</span>
+      </div>
+    </footer>
+
+    <script>
+      // AI text-reveal: split the hero headline into words, wrap each in a
+      // span with a staggered index so CSS can animate them in one by one,
+      // then attach a trailing cursor that blinks briefly and fades away.
+      (function () {
+        var el = document.querySelector("[data-reveal-text]");
+        if (!el) return;
+        var words = el.textContent.trim().split(/\s+/);
+        el.textContent = "";
+        var wrap = document.createElement("span");
+        wrap.className = "reveal-heading";
+        words.forEach(function (w, i) {
+          var span = document.createElement("span");
+          span.className = "reveal-word";
+          span.style.setProperty("--wi", i);
+          span.textContent = w;
+          wrap.appendChild(span);
+          wrap.appendChild(document.createTextNode(" "));
+        });
+        var cursor = document.createElement("span");
+        cursor.className = "reveal-cursor";
+        cursor.style.setProperty(
+          "--cursor-delay",
+          150 + words.length * 90 + "ms",
+        );
+        el.appendChild(wrap);
+        el.appendChild(cursor);
+      })();
+
+      // Mobile nav toggle — behaves like a proper modal: locks background
+      // scroll while open, closes on outside click / Escape, and resets
+      // itself if the window is resized back up to desktop width.
+      var navLinksEl = document.getElementById("navLinks");
+      var burgerBtnEl = document.getElementById("burgerBtn");
+      function setNavOpen(open) {
+        navLinksEl.classList.toggle("open", open);
+        document.body.classList.toggle("nav-open", open);
+      }
+      burgerBtnEl.addEventListener("click", function () {
+        setNavOpen(!navLinksEl.classList.contains("open"));
+      });
+      document.querySelectorAll(".nav-links a").forEach(function (a) {
+        a.addEventListener("click", function () {
+          setNavOpen(false);
+        });
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") setNavOpen(false);
+      });
+      document.addEventListener("click", function (e) {
+        if (
+          navLinksEl.classList.contains("open") &&
+          !navLinksEl.contains(e.target) &&
+          !burgerBtnEl.contains(e.target)
+        ) {
+          setNavOpen(false);
+        }
+      });
+      window.addEventListener("resize", function () {
+        if (window.innerWidth > 1024) setNavOpen(false);
+      });
+
+      // Job tabs
+      var tabBtns = document.querySelectorAll(".tab-btn");
+      tabBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var target = btn.getAttribute("data-tab");
+          document.querySelectorAll(".tab-btn").forEach(function (b) {
+            b.classList.remove("active");
+          });
+          document.querySelectorAll(".tab-panel").forEach(function (p) {
+            p.classList.remove("active");
+          });
+          btn.classList.add("active");
+          document
+            .querySelector('.tab-panel[data-panel="' + target + '"]')
+            .classList.add("active");
+        });
+      });
+
+      // FAQ accordion
+      document.querySelectorAll(".faq-q").forEach(function (q) {
+        q.addEventListener("click", function () {
+          q.parentElement.classList.toggle("open");
+        });
+      });
+
+      // Trust stats (single source — set `value` to null to show a placeholder
+      // dash + "verify" badge; fill it in with a real number once you have one)
+      var stats = [
+        { value: 100, label: "Verified learner count" },
+        { value: 50, label: "International learner locations" },
+        { value: 10, label: "Institutional partnerships" },
+      ];
+      var statRow = document.getElementById("statRow");
+      stats.forEach(function (s) {
+        var el = document.createElement("div");
+        el.className = "stat-box";
+        if (s.value === null || s.value === undefined || s.value === "") {
+          el.innerHTML =
+            '<div class="num is-placeholder">—</div>' +
+            '<span class="label">' +
+            s.label +
+            "</span>" +
+            '<span class="verify-badge">Add real number</span>';
+        } else {
+          el.innerHTML =
+            '<div class="num">' +
+            s.value +
+            "</div>" +
+            '<span class="label">' +
+            s.label +
+            "</span>";
+        }
+        statRow.appendChild(el);
+      });
+
+      // Expert ecosystem (rendered from data so it's easy to edit in one place)
+      var experts = [
+        [
+          "Vivek",
+          "Co-Founder",
+          "Leadership / AI / Business / Strategy",
+          "https://res.cloudinary.com/dk50cmtps/image/upload/v1787305095/Vivek_vdjrdm.png",
+        ],
+        [
+          "Joe",
+          "AI Marketing",
+          "AI for Marketing / Digital Marketing / AI-powered growth",
+          "https://res.cloudinary.com/dk50cmtps/image/upload/v1787305095/Joe_fcnjos.png",
+          "https://www.linkedin.com/in/joe-wenisch/",
+        ],
+        [
+          "Rajashri Sai",
+          "Co-Founder",
+          "Business / Strategy / AI adoption",
+          "https://res.cloudinary.com/dk50cmtps/image/upload/v1787305094/RajaSri_zqemyn.png",
+        ],
+        [
+          "Dr. Vanita",
+          "AI Expert",
+          "Artificial Intelligence / Applied AI",
+          "https://res.cloudinary.com/dk50cmtps/image/upload/v1787305094/vanitha_umblmr.jpg",
+        ],
+        [
+          "Dr. Aparna Rao",
+          "AI Expert",
+          "Artificial Intelligence / AI applications",
+          "https://res.cloudinary.com/dk50cmtps/image/upload/v1787305094/Aparna_ocypx7.png",
+        ],
+        [
+          "Venkatesh Sai",
+          "AI Technology",
+          "AI Technology / Technology / Applied AI",
+          "https://res.cloudinary.com/dk50cmtps/image/upload/v1787305095/Venkat_bze32g.png",
+        ],
+        [
+          "Sai Pattabiram",
+          "AI in Research",
+          "AI / Research / Deep Technology",
+          "https://res.cloudinary.com/dk50cmtps/image/upload/v1787305095/Sai_uudlzi.png",
+        ],
+        [
+          "Rajmohan",
+          "AI",
+          "AI / Industry applications",
+          "https://res.cloudinary.com/dk50cmtps/image/upload/v1787305095/RajMohan_jkz85x.png",
+        ],
+      ];
+      var grid = document.getElementById("expertGrid");
+      experts.forEach(function (e, idx) {
+        var initials = e[0]
+          .replace("Dr. ", "")
+          .split(" ")
+          .map(function (w) {
+            return w[0];
+          })
+          .slice(0, 2)
+          .join("");
+        var photoUrl = e[3];
+        var avatarInner = photoUrl
+          ? '<img src="' + photoUrl + '" alt="' + e[0] + '" loading="lazy" />'
+          : initials;
+        var el = document.createElement("div");
+        el.className = "expert-card";
+        el.style.setProperty("--i", idx % 4);
+        el.innerHTML =
+          '<div class="avatar-ring"><div class="avatar">' +
+          avatarInner +
+          "</div></div>" +
+          "<h3>" +
+          e[0] +
+          "</h3>" +
+          '<div class="expert-role">' +
+          e[1] +
+          "</div>" +
+          '<div class="expert-focus">' +
+          e[2] +
+          "</div>" +
+          '<span class="verify-badge">' +
+          (photoUrl
+            ? "Add LinkedIn &amp; credentials"
+            : "Add photo, LinkedIn &amp; credentials") +
+          "</span>";
+        grid.appendChild(el);
+      });
+
+      // Reveal expert cards with a staggered rise as the section scrolls
+      // into view, instead of animating them the moment the page loads.
+      if ("IntersectionObserver" in window) {
+        var expertObserver = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("in-view");
+                expertObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.2 },
+        );
+        document.querySelectorAll(".expert-card").forEach(function (card) {
+          expertObserver.observe(card);
+        });
+      } else {
+        document.querySelectorAll(".expert-card").forEach(function (card) {
+          card.classList.add("in-view");
+        });
+      }
+    </script>
+  </body>
+</html>
